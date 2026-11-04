@@ -1,0 +1,11 @@
+---
+import Piece from './Piece.astro';
+import { prix, type Produit } from '../data/catalogue';
+interface Props { produit: Produit }
+const { produit: p } = Astro.props;
+---
+<a class="carte" href={`/produit/${p.slug}/`} data-vue="auto">
+  <Piece produit={p} />
+  <span class="carte__nom">{p.nom}</span>
+  <span class="carte__prix">{prix(p.prix)}</span>
+</a>

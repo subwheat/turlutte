@@ -1,0 +1,14 @@
+---
+import { articles } from '../data/manuel';
+---
+<ol class="manuel__articles">
+  {articles.map((a, i) => (
+    <li class="article">
+      <span class="article__numero" aria-hidden="true">{a.numero}</span>
+      <a class="article__texte" href={`/manuel/article-${i + 1}/`}>
+        <span class="article__regle">{a.regle}</span>
+        <span class="article__chute">{a.chute}</span>
+      </a>
+    </li>
+  ))}
+</ol>

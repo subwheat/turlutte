@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Turlutte — Panier">
+  <div class="cadre page page--etroite">
+    <h1 class="page__titre">Panier</h1>
+    <div data-panier-vide>
+      <p class="page__chapo">Rien pour l’instant. Personne ne vous juge.</p>
+      <p><a class="bouton" href="/vestiaires/">Voir les vestiaires</a></p>
+    </div>
+    <div data-panier-plein hidden>
+      <ul class="lignes" data-panier></ul>
+      <p class="total"><span>Total</span> <span data-total>0 €</span></p>
+      <p class="note">Livraison calculée au paiement.</p>
+      <p><a class="bouton" href="/paiement/">Payer</a></p>
+    </div>
+  </div>
+</Base>

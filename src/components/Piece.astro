@@ -1,0 +1,57 @@
+---
+import type { Produit } from '../data/catalogue';
+interface Props { produit: Produit }
+const { produit: p } = Astro.props;
+const col = 'M100 20C115 42 185 42 200 20';
+const dosCol = 'M100 20C115 28 185 28 200 20';
+const tee = (c: string) => `${c}L240 30L295 95L250 130L230 110V330H70V110L50 130L5 95L60 30Z`;
+const manches = (c: string) => `${c}L240 30L280 60L298 300L258 305L232 130V330H68V130L42 305L2 300L20 60L60 30Z`;
+const vetement = p.forme === 'tee' || p.forme === 'pull' || p.forme === 'chemise';
+const corps = p.forme === 'tee' ? tee : manches;
+// Sans phrase au dos, la nuit garde le texte du devant : une pièce n'est jamais muette par erreur.
+const texteDos = p.dos ?? (p.interieur ? undefined : p.devant);
+---
+<div class={`piece piece--${p.forme} piece--${p.couleur}`}>
+  <div class="piece__tour">
+    <div class="piece__face piece__face--devant">
+      <svg viewBox="0 0 300 340" aria-hidden="true">
+        {vetement && <>
+          <path class="piece__corps" d={corps(col)} />
+          <path class="piece__trait" d={col} />
+          {p.forme === 'chemise' && <path class="piece__trait" d="M150 38V330M112 30L150 62L188 30" />}
+        </>}
+        {p.forme === 'mug' && <>
+          <rect class="piece__corps" x="50" y="70" width="170" height="210" rx="6" />
+          <path class="piece__anse" d="M220 115H262V225H220" />
+        </>}
+        {p.forme === 'carte' && <rect class="piece__corps" x="10" y="75" width="280" height="190" />}
+        {p.forme === 'affiche' && <rect class="piece__corps" x="45" y="10" width="210" height="320" />}
+        {p.forme === 'tote' && <>
+          <path class="piece__anse" d="M105 110C105 20 195 20 195 110" />
+          <rect class="piece__corps" x="50" y="105" width="200" height="225" />
+        </>}
+      </svg>
+      {p.devant && <p class="piece__texte">{p.devant}</p>}
+    </div>
+    <div class="piece__face piece__face--dos">
+      <svg viewBox="0 0 300 340" aria-hidden="true">
+        {vetement && <>
+          <path class="piece__corps" d={corps(dosCol)} />
+          <path class="piece__trait" d={dosCol} />
+        </>}
+        {p.forme === 'mug' && <>
+          <rect class="piece__corps" x="80" y="70" width="170" height="210" rx="6" />
+          <path class="piece__anse" d="M80 115H38V225H80" />
+        </>}
+        {p.forme === 'carte' && <rect class="piece__corps" x="10" y="75" width="280" height="190" />}
+        {p.forme === 'affiche' && <rect class="piece__corps" x="45" y="10" width="210" height="320" />}
+        {p.forme === 'tote' && <>
+          <path class="piece__anse" d="M105 110C105 20 195 20 195 110" />
+          <rect class="piece__corps" x="50" y="105" width="200" height="225" />
+        </>}
+      </svg>
+      {texteDos && <p class:list={['piece__texte', { 'piece__texte--chute': p.dos }]}>{texteDos}</p>}
+      {p.interieur && <p class="piece__griffe">{p.interieur}</p>}
+    </div>
+  </div>
+</div>

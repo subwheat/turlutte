@@ -144,15 +144,7 @@ body {
 
 /* En-tête */
 .tete {
-  padding: clamp(2.5rem, 7vh, 5rem) var(--place-du-fil) clamp(2rem, 6vh, 4rem) var(--marge);
-}
-
-.tete__marque {
-  margin: 0 0 clamp(2.5rem, 12vh, 7.5rem);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
+  padding: clamp(2rem, 6vh, 4rem) var(--place-du-fil) clamp(2rem, 6vh, 4rem) var(--marge);
 }
 
 [data-state='jour'] .seule-nuit,
@@ -164,7 +156,7 @@ body {
   max-width: 11ch;
   margin: 0;
   font-family: var(--display);
-  font-size: clamp(3.25rem, 11.5vw, 10.5rem);
+  font-size: clamp(3.25rem, 10vw, 9rem);
   font-weight: 400;
   line-height: 0.98;
   letter-spacing: -0.01em;
@@ -195,10 +187,6 @@ body {
 }
 
 /* Le manuel */
-.manuel {
-  padding: clamp(3rem, 10vh, 7rem) var(--place-du-fil) clamp(3rem, 10vh, 7rem) var(--marge);
-}
-
 .manuel__articles {
   display: grid;
   gap: clamp(2.75rem, 8vh, 5.5rem);
@@ -246,7 +234,9 @@ body {
   display: grid;
   gap: 0.75rem;
   justify-items: center;
-  padding: clamp(3rem, 10vh, 6rem) var(--marge) clamp(2.5rem, 7vh, 4rem);
+  margin-top: clamp(3rem, 8vh, 6rem);
+  padding: clamp(3rem, 8vh, 5rem) var(--marge) clamp(2rem, 5vh, 3rem);
+  border-top: 2px solid var(--encre);
   text-align: center;
 }
 
@@ -267,12 +257,639 @@ body {
   font-style: italic;
 }
 
+.pied__nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 1.5rem;
+  margin-top: 1rem;
+}
+
+.pied__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}
+
 .pied__signature {
-  margin-top: 0.75rem;
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.26em;
   text-transform: uppercase;
+}
+
+.pied__maquette {
+  font-size: 0.8125rem;
+  font-style: italic;
+}
+
+/* Base commune */
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+p {
+  line-height: 1.5;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--encre);
+  outline-offset: 3px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.evitement {
+  position: absolute;
+  z-index: 20;
+  top: -4rem;
+  left: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--encre);
+  color: var(--fond);
+}
+
+.evitement:focus {
+  top: 0.5rem;
+}
+
+.cadre {
+  padding-inline: var(--marge) var(--place-du-fil);
+}
+
+.surtitre {
+  margin: 0 0 1.5rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.surtitre a {
+  text-decoration: none;
+}
+
+.section {
+  margin-top: clamp(3.5rem, 10vh, 7rem);
+}
+
+.section--serree {
+  margin-top: clamp(2.5rem, 7vh, 5rem);
+}
+
+/* En-tête */
+.entete {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem clamp(1rem, 3vw, 2.5rem);
+  padding: 1rem var(--place-du-fil) 1rem var(--marge);
+}
+
+.entete__marque {
+  margin-right: auto;
+  font-family: var(--display);
+  font-size: 1.625rem;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 clamp(1rem, 2.4vw, 2rem);
+}
+
+.nav a,
+.entete__panier,
+.entete__menu {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+}
+
+.entete__panier {
+  gap: 0.3em;
+}
+
+.nav a:hover,
+.entete__panier:hover {
+  text-decoration: underline;
+}
+
+.entete__menu {
+  display: none;
+  cursor: pointer;
+}
+
+[data-state='nuit'] .nav__baddies {
+  color: var(--signal);
+}
+
+/* Vestiaires */
+.vestiaires {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  border-top: 2px solid var(--encre);
+  list-style: none;
+}
+
+.vestiaire {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  height: 100%;
+  padding: 1.25rem 1rem 1.5rem 0;
+  text-decoration: none;
+}
+
+.vestiaire__nom {
+  font-family: var(--display);
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  line-height: 1.1;
+}
+
+.vestiaire__promesse {
+  font-style: italic;
+}
+
+.vestiaire:hover .vestiaire__nom {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.12em;
+}
+
+/* Grille de pièces */
+.grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(10rem, 100%), 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.grille--ample {
+  margin-top: clamp(2rem, 6vh, 4rem);
+  grid-template-columns: repeat(auto-fill, minmax(min(10rem, 100%), 1fr));
+}
+
+.carte {
+  display: grid;
+  gap: 0.2rem;
+  text-decoration: none;
+}
+
+.carte__nom {
+  margin-top: 0.5rem;
+}
+
+.carte__prix {
+  font-style: italic;
+}
+
+.carte:hover .carte__nom {
+  text-decoration: underline;
+}
+
+/* La pièce : une face pour le jour, une pour la nuit. */
+.piece {
+  container-type: inline-size;
+  width: 100%;
+  perspective: 1400px;
+}
+
+.piece__tour {
+  position: relative;
+  aspect-ratio: 300 / 340;
+  transform-style: preserve-3d;
+  transition: transform 700ms cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+[data-vue='dos'] .piece__tour,
+[data-state='nuit'] [data-vue='auto'] .piece__tour {
+  transform: rotateY(180deg);
+}
+
+.piece__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
+.piece__face--dos {
+  transform: rotateY(180deg);
+}
+
+.piece svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.piece--creme {
+  --piece: var(--creme);
+  --sur-piece: var(--bleu);
+}
+
+.piece--bleu {
+  --piece: var(--bleu);
+  --sur-piece: var(--creme);
+}
+
+.piece__corps {
+  fill: var(--piece);
+  stroke: var(--encre);
+  stroke-width: 1.5;
+}
+
+.piece__trait {
+  fill: none;
+  stroke: var(--sur-piece);
+  stroke-width: 1.5;
+}
+
+.piece__anse {
+  fill: none;
+  stroke: var(--encre);
+  stroke-width: 7;
+}
+
+.piece__texte,
+.piece__griffe {
+  position: absolute;
+  top: 31%;
+  left: 27%;
+  width: 46%;
+  margin: 0;
+  color: var(--sur-piece);
+  font-size: 5.6cqw;
+  line-height: 1.25;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.piece__texte--chute {
+  font-style: italic;
+}
+
+.piece--mug .piece__texte { top: 38%; left: 20%; width: 49%; }
+.piece--mug .piece__face--dos .piece__texte { left: 29%; }
+.piece--carte .piece__texte { top: 40%; left: 12%; width: 76%; font-size: 7cqw; }
+.piece--affiche .piece__texte { top: 34%; left: 22%; width: 56%; font-size: 8cqw; }
+.piece--tote .piece__texte { top: 52%; left: 24%; width: 52%; }
+
+/* La griffe cachée du Vice : le phosphore vit à l'intérieur. */
+.piece__griffe {
+  top: 12%;
+  left: 31%;
+  width: 38%;
+  padding: 5cqw 2cqw;
+  background: var(--phosphore);
+  color: var(--bleu);
+  font-size: 4.1cqw;
+}
+
+/* Pages */
+.page {
+  padding-top: clamp(1.5rem, 5vh, 3.5rem);
+}
+
+.page--etroite {
+  max-width: 52rem;
+}
+
+.page__titre {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  font-weight: 400;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.page__chapo {
+  margin: 1rem 0 2rem;
+  font-size: clamp(1.25rem, 2.4vw, 1.875rem);
+  font-style: italic;
+  line-height: 1.25;
+}
+
+.rayon__tete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.rayon__nom {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.rayon__nom a {
+  text-decoration: none;
+}
+
+.rayon__promesse {
+  margin: 0;
+  font-style: italic;
+}
+
+.planche {
+  margin: 0 0 1rem;
+  max-width: 40rem;
+}
+
+.planche img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.planche figcaption {
+  margin-top: 1rem;
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+  line-height: 1.25;
+}
+
+/* Fiche produit */
+.fiche {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.fiche__visuel {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+}
+
+.fiche__infos {
+  min-width: 0;
+}
+
+.fiche__nom {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.75rem, 5.5vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.fiche__prix {
+  margin: 0.75rem 0 2rem;
+  font-size: 1.375rem;
+}
+
+.lien {
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-style: italic;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+.achat {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.achat__retour {
+  margin: 0;
+}
+
+.tailles {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.tailles legend {
+  margin-bottom: 0.5rem;
+  padding: 0;
+}
+
+.tailles__choix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tailles__choix input {
+  position: absolute;
+  opacity: 0;
+}
+
+.tailles__choix span {
+  display: grid;
+  place-items: center;
+  min-width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--encre);
+  cursor: pointer;
+}
+
+.tailles__choix input:checked + span {
+  background: var(--encre);
+  color: var(--fond);
+}
+
+.tailles__choix input:focus-visible + span {
+  outline: 2px solid var(--encre);
+  outline-offset: 3px;
+}
+
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.25rem;
+  padding: 0.75rem 2rem;
+  border: 0;
+  background: var(--encre);
+  color: var(--fond);
+  font: inherit;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bouton:hover {
+  text-decoration: underline;
+}
+
+.details {
+  display: grid;
+  margin: 2rem 0;
+  border-top: 1px solid var(--encre);
+}
+
+.details > div {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 1fr) 2fr;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--encre);
+}
+
+.details dt {
+  font-weight: 700;
+}
+
+.details dd {
+  margin: 0;
+  min-width: 0;
+}
+
+.details--ample {
+  margin-top: 2.5rem;
+}
+
+.renvoi {
+  display: grid;
+  gap: 0.15rem;
+  font-size: 1.125rem;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+.renvoi__numero {
+  font-size: 0.8125rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.regle__numero {
+  margin: 2.5rem 0 1rem;
+  font-size: 0.8125rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.regle {
+  max-width: 18ch;
+  margin: 0;
+  font-family: var(--texte);
+  font-size: clamp(2.25rem, 6vw, 5rem);
+  font-weight: 400;
+  line-height: 1.12;
+}
+
+.article__texte {
+  text-decoration: none;
+}
+
+a.article__texte:hover .article__regle {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+/* Panier et paiement */
+.lignes {
+  margin: 2rem 0 0;
+  padding: 0;
+  border-top: 2px solid var(--encre);
+  list-style: none;
+}
+
+.ligne {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--encre);
+}
+
+.ligne__quantite {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ligne__quantite button {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--encre);
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.ligne__quantite span {
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.ligne__prix {
+  min-width: 4rem;
+  text-align: right;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  margin: 1.5rem 0 0;
+  font-size: 1.375rem;
+}
+
+.note {
+  font-style: italic;
+}
+
+.formulaire {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.formulaire label {
+  margin-top: 0.75rem;
+}
+
+.formulaire input {
+  min-height: 3rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--encre);
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.formulaire .bouton {
+  margin-top: 1rem;
 }
 
 @media (max-width: 40rem) {
@@ -283,11 +900,44 @@ body {
   .fil__consigne {
     display: none;
   }
+
+  .entete {
+    gap: 0 1rem;
+  }
+
+  .entete__menu {
+    display: inline-flex;
+    order: 2;
+  }
+
+  .entete__panier {
+    order: 3;
+  }
+
+  .js .nav {
+    display: none;
+    order: 4;
+    flex-basis: 100%;
+    flex-direction: column;
+  }
+
+  .js .nav--ouvert {
+    display: flex;
+  }
+
+  .ligne {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .ligne__nom {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .fil__ligne,
-  .fil__consigne {
+  .fil__consigne,
+  .piece__tour {
     transition: none;
   }
 

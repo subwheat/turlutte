@@ -1,44 +1,39 @@
 ---
 import Base from '../layouts/Base.astro';
-import Fil from '../components/Fil.astro';
-import { articles } from '../data/manuel';
+import Carte from '../components/Carte.astro';
+import ListeArticles from '../components/ListeArticles.astro';
+import { parSlug, vestiaires } from '../data/catalogue';
+const selection = ['un-peu', 'capitalisme', 'pull-creme', 'mug-lundi'].map((s) => parSlug(s)!);
 ---
-<Base
-  title="Turlutte — Manuel de savoir-vivre"
-  description="Manuel de savoir-vivre à l’usage des mauvaises fréquentations. Good manners × bad habits."
->
-  <Fil />
-
-  <header class="tete">
-    <p class="tete__marque">
-      <span class="seul-jour">Good manners</span>
-      <span class="seule-nuit">Bad habits</span>
-    </p>
+<Base title="Turlutte — Manuel de savoir-vivre">
+  <section class="tete">
+    <p class="surtitre"><span class="seul-jour">Good manners</span><span class="seule-nuit">Bad habits</span></p>
     <h1 class="tete__titre">Manuel de savoir-vivre</h1>
     <p class="tete__sous-titre">à l’usage des mauvaises fréquentations</p>
-  </header>
+  </section>
+  <div class="rayures" aria-hidden="true"><span></span><span></span><span></span><span class="rayures__partie"></span></div>
 
-  <div class="rayures" aria-hidden="true">
-    <span></span><span></span><span></span><span class="rayures__partie"></span>
-  </div>
-
-  <main class="manuel">
-    <ol class="manuel__articles">
-      {articles.map((a) => (
-        <li class="article">
-          <span class="article__numero" aria-hidden="true">{a.numero}</span>
-          <p class="article__texte">
-            <span class="article__regle">{a.regle}</span>
-            <span class="article__chute">{a.chute}</span>
-          </p>
+  <section class="cadre section" aria-labelledby="titre-vestiaires">
+    <h2 id="titre-vestiaires" class="surtitre">Les vestiaires</h2>
+    <ul class="vestiaires">
+      {vestiaires.map((v) => (
+        <li>
+          <a class="vestiaire" href={`/vestiaires/${v.slug}/`}>
+            <span class="vestiaire__nom">{v.nom}</span>
+            <span class="vestiaire__promesse">{v.promesse}</span>
+          </a>
         </li>
       ))}
-    </ol>
-  </main>
+    </ul>
+  </section>
 
-  <footer class="pied">
-    <p class="pied__mot">Turlutte</p>
-    <p class="pied__promesse">Fait pour les gens qui savent.</p>
-    <p class="pied__signature">Good manners × Bad habits</p>
-  </footer>
+  <section class="cadre section" aria-labelledby="titre-selection">
+    <h2 id="titre-selection" class="surtitre">Sur la table</h2>
+    <div class="grille">{selection.map((p) => <Carte produit={p} />)}</div>
+  </section>
+
+  <section class="cadre section" aria-labelledby="titre-manuel">
+    <h2 id="titre-manuel" class="surtitre">Le manuel</h2>
+    <ListeArticles />
+  </section>
 </Base>

@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import Carte from '../../components/Carte.astro';
+import { duRayon, vestiaires, type Vestiaire } from '../../data/catalogue';
+export function getStaticPaths() {
+  return vestiaires.map((v) => ({ params: { slug: v.slug }, props: { v } }));
+}
+const { v } = Astro.props as { v: Vestiaire };
+---
+<Base title={`Turlutte — ${v.nom}`}>
+  <div class="cadre page">
+    <p class="surtitre">{v.camp}</p>
+    <h1 class="page__titre">{v.nom}</h1>
+    <p class="page__chapo">{v.promesse}</p>
+    {v.slug === 'la-vertu' && (
+      <figure class="planche">
+        <img src="/tailleur.jpg" alt="Femme en tailleur crème dans une ruelle, la nuit, au flash" width="784" height="1168" />
+        <figcaption>On ne court pas après l’argent. <em>On sait où il dîne.</em></figcaption>
+      </figure>
+    )}
+    <div class="grille grille--ample">{duRayon(v.slug).map((p) => <Carte produit={p} />)}</div>
+  </div>
+</Base>

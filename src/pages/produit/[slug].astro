@@ -1,0 +1,67 @@
+---
+import Base from '../../layouts/Base.astro';
+import Piece from '../../components/Piece.astro';
+import Carte from '../../components/Carte.astro';
+import { articles } from '../../data/manuel';
+import { duRayon, prix, produits, vestiaires, type Produit } from '../../data/catalogue';
+export function getStaticPaths() {
+  return produits.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+const { p } = Astro.props as { p: Produit };
+const vestiaire = vestiaires.find((v) => v.slug === p.rayon);
+const rayonNom = vestiaire?.nom ?? (p.rayon === 'goodies' ? 'Goodies' : 'Baddies');
+const rayonLien = vestiaire ? `/vestiaires/${p.rayon}/` : `/${p.rayon}/`;
+const article = p.article ? articles[p.article - 1] : undefined;
+const voisines = duRayon(p.rayon).filter((x) => x.slug !== p.slug).slice(0, 3);
+const texte = Boolean(p.dos || p.interieur || p.devant);
+const retournable = Boolean(p.dos || p.interieur);
+---
+<Base title={`Turlutte — ${p.nom}`}>
+  <div class="cadre page">
+    <div class="fiche" data-vue="auto">
+      <div class="fiche__visuel">
+        <Piece produit={p} />
+        {retournable && <button class="lien fiche__retourner" type="button" data-retourner>Retourner</button>}
+      </div>
+      <div class="fiche__infos">
+        <p class="surtitre"><a href={rayonLien}>{rayonNom}</a></p>
+        <h1 class="fiche__nom">{p.nom}</h1>
+        <p class="fiche__prix">{prix(p.prix)}</p>
+        <form class="achat" data-ajout>
+          <input type="hidden" name="slug" value={p.slug} />
+          {p.tailles && (
+            <fieldset class="tailles">
+              <legend>Taille</legend>
+              <div class="tailles__choix">
+                {p.tailles.map((t) => (
+                  <label><input type="radio" name="taille" value={t} checked={t === 'M'} /><span>{t}</span></label>
+                ))}
+              </div>
+            </fieldset>
+          )}
+          <button class="bouton" type="submit">Ajouter au panier</button>
+          <p class="achat__retour" data-confirmation hidden role="status">Ajouté. <a href="/panier/">Voir le panier</a></p>
+        </form>
+        <dl class="details">
+          <div><dt>Matière</dt><dd>{p.matiere}</dd></div>
+          <div><dt>Fabrication</dt><dd>À la commande. <a href="/coulisses/">Voir les coulisses</a></dd></div>
+          <div><dt>Expédition</dt><dd>[délai à confirmer]</dd></div>
+          {!texte && <div><dt>Griffe</dt><dd>Tissée, au col.</dd></div>}
+        </dl>
+        {article && (
+          <a class="renvoi" href={`/manuel/article-${p.article}/`}>
+            <span class="renvoi__numero">Article {article.numero}</span>
+            <span>{article.regle}</span>
+            <span class="article__chute">{article.chute}</span>
+          </a>
+        )}
+      </div>
+    </div>
+    {voisines.length > 0 && (
+      <section class="section" aria-labelledby="voisines">
+        <h2 id="voisines" class="surtitre">Dans le même vestiaire</h2>
+        <div class="grille">{voisines.map((x) => <Carte produit={x} />)}</div>
+      </section>
+    )}
+  </div>
+</Base>

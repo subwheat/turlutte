@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import Carte from '../components/Carte.astro';
+import { duRayon } from '../data/catalogue';
+---
+<Base title="Turlutte — Goodies">
+  <div class="cadre page">
+    <p class="surtitre">Good manners</p>
+    <h1 class="page__titre">Goodies</h1>
+    <p class="page__chapo">Pour offrir sans s’engager.</p>
+    <div class="grille grille--ample">{duRayon('goodies').map((p) => <Carte produit={p} />)}</div>
+  </div>
+</Base>

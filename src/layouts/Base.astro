@@ -7,12 +7,10 @@ import '@fontsource/libre-caslon-text/latin-700.css';
 import '@fontsource/libre-caslon-text/latin-ext-400.css';
 import '@fontsource/libre-caslon-text/latin-ext-400-italic.css';
 import '../styles/global.css';
+import Fil from '../components/Fil.astro';
 
-interface Props {
-  title: string;
-  description: string;
-}
-const { title, description } = Astro.props;
+interface Props { title: string; description?: string }
+const { title, description = 'Good manners × bad habits.' } = Astro.props;
 ---
 <!doctype html>
 <html lang="fr" data-state="jour">
@@ -20,19 +18,15 @@ const { title, description } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <meta name="theme-color" content="#F6F1E4" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <!-- Avant le premier affichage : choix mémorisé, sinon l'heure du visiteur. Sans script, c'est le jour. -->
     <script is:inline>
       (function () {
         var racine = document.documentElement;
         racine.classList.add('js');
         var choix = null;
-        try {
-          choix = localStorage.getItem('turlutte-etat');
-        } catch (e) {}
+        try { choix = localStorage.getItem('turlutte-etat'); } catch (e) {}
         var heure = new Date().getHours();
         var nuit = heure >= 21 || heure < 6;
         racine.dataset.state = choix === 'jour' || choix === 'nuit' ? choix : nuit ? 'nuit' : 'jour';
@@ -40,6 +34,33 @@ const { title, description } = Astro.props;
     </script>
   </head>
   <body>
-    <slot />
+    <a class="evitement" href="#contenu">Aller au contenu</a>
+    <Fil />
+    <header class="entete">
+      <a class="entete__marque" href="/">Turlutte</a>
+      <button class="entete__menu" type="button" aria-expanded="false" aria-controls="nav" data-menu>Menu</button>
+      <nav id="nav" class="nav" aria-label="Navigation principale">
+        <a href="/vestiaires/">Vestiaires</a>
+        <a href="/goodies/">Goodies</a>
+        <a class="seule-nuit nav__baddies" href="/baddies/">Baddies</a>
+        <a href="/manuel/">Manuel</a>
+        <a href="/les-vrais-gens/">Les vrais gens</a>
+      </nav>
+      <a class="entete__panier" href="/panier/">Panier <span data-compteur>(0)</span></a>
+    </header>
+    <main id="contenu"><slot /></main>
+    <footer class="pied">
+      <p class="pied__mot">Turlutte</p>
+      <p class="pied__promesse">Fait pour les gens qui savent.</p>
+      <nav class="pied__nav" aria-label="Pied de page">
+        <a href="/coulisses/">Les coulisses</a>
+        <a href="/aide/">Aide</a>
+        <a href="/pro/">Pro</a>
+        <a href="/legal/">Légal</a>
+      </nav>
+      <p class="pied__signature">Good manners × Bad habits</p>
+      <p class="pied__maquette">Maquette : pièces, prix et délais fictifs.</p>
+    </footer>
+    <script>import '../scripts/site.ts';</script>
   </body>
 </html>

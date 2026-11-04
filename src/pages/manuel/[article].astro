@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import Carte from '../../components/Carte.astro';
+import { articles, type Article } from '../../data/manuel';
+import { produits } from '../../data/catalogue';
+export function getStaticPaths() {
+  return articles.map((a, i) => ({ params: { article: `article-${i + 1}` }, props: { a, n: i + 1 } }));
+}
+const { a, n } = Astro.props as { a: Article; n: number };
+const pieces = produits.filter((p) => p.article === n && p.rayon !== 'baddies');
+const suivant = n < 12 ? n + 1 : 1;
+---
+<Base title={`Turlutte — Article ${a.numero}`}>
+  <div class="cadre page">
+    <p class="surtitre"><a href="/manuel/">Le manuel</a></p>
+    <p class="regle__numero">Article {a.numero}</p>
+    <h1 class="regle">
+      <span class="article__regle">{a.regle}</span>
+      <span class="article__chute">{a.chute}</span>
+    </h1>
+    {pieces.length > 0 && <div class="grille section">{pieces.map((p) => <Carte produit={p} />)}</div>}
+    <p class="section"><a class="lien" href={`/manuel/article-${suivant}/`}>Article suivant</a></p>
+  </div>
+</Base>

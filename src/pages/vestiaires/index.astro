@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import Carte from '../../components/Carte.astro';
+import { duRayon, vestiaires } from '../../data/catalogue';
+---
+<Base title="Turlutte — Les vestiaires">
+  <div class="cadre page">
+    <h1 class="page__titre">Les vestiaires</h1>
+    {vestiaires.map((v) => (
+      <section class="section section--serree">
+        <div class="rayon__tete">
+          <h2 class="rayon__nom"><a href={`/vestiaires/${v.slug}/`}>{v.nom}</a></h2>
+          <p class="rayon__promesse">{v.promesse}</p>
+        </div>
+        <div class="grille">{duRayon(v.slug).slice(0, 4).map((p) => <Carte produit={p} />)}</div>
+      </section>
+    ))}
+  </div>
+</Base>

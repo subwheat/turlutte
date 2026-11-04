@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Turlutte — Paiement">
+  <div class="cadre page page--etroite">
+    <h1 class="page__titre">Paiement</h1>
+    <p class="note">Maquette : aucun paiement n’est effectué. Sur le vrai site, cette étape sera sur WooCommerce.</p>
+    <form class="formulaire" data-paiement>
+      <label for="courriel">E-mail</label>
+      <input id="courriel" name="courriel" type="email" autocomplete="off" required />
+      <label for="nom">Nom</label>
+      <input id="nom" name="nom" autocomplete="off" required />
+      <label for="adresse">Adresse de livraison</label>
+      <input id="adresse" name="adresse" autocomplete="off" required />
+      <p class="total"><span>Total</span> <span data-resume-paiement>0 €</span></p>
+      <button class="bouton" type="submit">Simuler le paiement</button>
+    </form>
+  </div>
+</Base>
