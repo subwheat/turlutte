@@ -1,0 +1,95 @@
+---
+import Turlutte from './Turlutte.astro';
+---
+<button class="fil" type="button" aria-pressed="false" aria-label="Passer à la nuit" data-fil>
+  <span class="fil__ligne" aria-hidden="true"></span>
+  <Turlutte />
+  <span class="fil__consigne" aria-hidden="true" data-fil-consigne>Tirer le fil</span>
+</button>
+
+<script>
+  const SEUIL = 56;
+  const COURSE_MAX = 120;
+
+  const racine = document.documentElement;
+  const bouton = document.querySelector<HTMLButtonElement>('[data-fil]')!;
+  const consigne = document.querySelector<HTMLElement>('[data-fil-consigne]')!;
+
+  const etat = () => (racine.dataset.state === 'nuit' ? 'nuit' : 'jour');
+
+  function afficher() {
+    const nuit = etat() === 'nuit';
+    bouton.setAttribute('aria-pressed', String(nuit));
+    bouton.setAttribute('aria-label', nuit ? 'Passer au jour' : 'Passer à la nuit');
+    consigne.textContent = nuit ? 'Rallumer' : 'Tirer le fil';
+  }
+
+  function memoriser(valeur: string) {
+    try {
+      localStorage.setItem('turlutte-etat', valeur);
+    } catch {
+      // Stockage indisponible : le choix vaut pour cette page.
+    }
+  }
+
+  function basculer() {
+    const suivant = etat() === 'nuit' ? 'jour' : 'nuit';
+    const appliquer = () => {
+      racine.dataset.state = suivant;
+      afficher();
+    };
+    memoriser(suivant);
+
+    const calme = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!calme && 'startViewTransition' in document) {
+      document.startViewTransition(appliquer);
+    } else {
+      appliquer();
+    }
+  }
+
+  // Tirer : le fil suit le doigt et bascule passé le seuil.
+  let depart: number | null = null;
+  let course = 0;
+  let aGlisse = false;
+
+  bouton.addEventListener('pointerdown', (e) => {
+    depart = e.clientY;
+    course = 0;
+    aGlisse = false;
+    bouton.setPointerCapture(e.pointerId);
+    bouton.classList.add('fil--tire');
+  });
+
+  bouton.addEventListener('pointermove', (e) => {
+    if (depart === null) return;
+    course = Math.max(0, Math.min(COURSE_MAX, e.clientY - depart));
+    if (course > 4) aGlisse = true;
+    bouton.style.setProperty('--tirage', `${course}px`);
+  });
+
+  function relacher() {
+    if (depart === null) return;
+    depart = null;
+    bouton.classList.remove('fil--tire');
+    bouton.style.setProperty('--tirage', '0px');
+    if (course >= SEUIL) basculer();
+  }
+
+  bouton.addEventListener('pointerup', relacher);
+  bouton.addEventListener('pointercancel', () => {
+    course = 0;
+    relacher();
+  });
+
+  // Clic, tap et clavier : un geste franc suffit, le fil n'est jamais obligatoire.
+  bouton.addEventListener('click', () => {
+    if (aGlisse) {
+      aGlisse = false;
+      return;
+    }
+    basculer();
+  });
+
+  afficher();
+</script>

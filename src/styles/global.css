@@ -1,0 +1,297 @@
+:root {
+  --creme: #f6f1e4;
+  --bleu: #0e2239;
+  --phosphore: #ddf56a;
+
+  --fond: var(--creme);
+  --encre: var(--bleu);
+  --rayure: var(--bleu);
+  --signal: var(--bleu);
+
+  --marge: clamp(1rem, 5vw, 5rem);
+  --place-du-fil: clamp(3.75rem, 9vw, 7rem);
+  --display: 'Libre Caslon Display', 'Baskerville', Georgia, serif;
+  --texte: 'Libre Caslon Text', 'Baskerville', Georgia, serif;
+}
+
+[data-state='nuit'] {
+  --fond: var(--bleu);
+  --encre: var(--creme);
+  --rayure: var(--creme);
+  --signal: var(--phosphore);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--fond);
+  color: var(--encre);
+  font-family: var(--texte);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* La nuit tombe du haut, depuis le fil. */
+::view-transition-old(root) {
+  animation: none;
+}
+
+::view-transition-new(root) {
+  animation: tombee 650ms cubic-bezier(0.7, 0, 0.2, 1) both;
+}
+
+@keyframes tombee {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+/* Le fil */
+.fil {
+  --tirage: 0px;
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  right: clamp(0.5rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 3rem;
+  padding: 0 0 0.5rem;
+  border: 0;
+  background: transparent;
+  color: var(--signal);
+  font: inherit;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fil--tire {
+  cursor: grabbing;
+}
+
+.fil__ligne {
+  display: block;
+  width: 2px;
+  height: calc(clamp(1.5rem, 6vh, 3.5rem) + var(--tirage));
+  margin-bottom: -2px;
+  background: currentColor;
+  transition: height 320ms cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+
+.fil--tire .fil__ligne {
+  transition: none;
+}
+
+.fil .turlutte {
+  width: 2.25rem;
+  height: 5.625rem;
+  transform-origin: 50% 0;
+}
+
+.turlutte__rayures {
+  stroke: var(--fond);
+}
+
+.fil__consigne {
+  position: absolute;
+  top: calc(clamp(1.5rem, 6vh, 3.5rem) + var(--tirage) + 1.9rem);
+  right: 3.1rem;
+  color: var(--encre);
+  font-size: 0.875rem;
+  font-style: italic;
+  white-space: nowrap;
+  transition: top 320ms cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+
+.fil--tire .fil__consigne {
+  transition: none;
+}
+
+.fil:focus-visible {
+  outline: 2px solid var(--encre);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .fil:not(.fil--tire):hover .turlutte {
+    animation: balance 1.1s ease-in-out;
+  }
+}
+
+@keyframes balance {
+  25% {
+    transform: rotate(6deg);
+  }
+  60% {
+    transform: rotate(-4deg);
+  }
+}
+
+/* En-tête */
+.tete {
+  padding: clamp(2.5rem, 7vh, 5rem) var(--place-du-fil) clamp(2rem, 6vh, 4rem) var(--marge);
+}
+
+.tete__marque {
+  margin: 0 0 clamp(2.5rem, 12vh, 7.5rem);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+[data-state='jour'] .seule-nuit,
+[data-state='nuit'] .seul-jour {
+  display: none;
+}
+
+.tete__titre {
+  max-width: 11ch;
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(3.25rem, 11.5vw, 10.5rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.tete__sous-titre {
+  margin: clamp(1rem, 3vh, 1.75rem) 0 0;
+  font-size: clamp(1.25rem, 2.6vw, 2.25rem);
+  font-style: italic;
+  line-height: 1.2;
+}
+
+/* La marinière : une rayure quitte le rang la nuit. */
+.rayures {
+  display: grid;
+  gap: clamp(0.5rem, 1vw, 0.75rem);
+}
+
+.rayures span {
+  display: block;
+  height: clamp(0.5rem, 1vw, 0.75rem);
+  background: var(--rayure);
+}
+
+[data-state='nuit'] .rayures__partie {
+  background: var(--signal);
+}
+
+/* Le manuel */
+.manuel {
+  padding: clamp(3rem, 10vh, 7rem) var(--place-du-fil) clamp(3rem, 10vh, 7rem) var(--marge);
+}
+
+.manuel__articles {
+  display: grid;
+  gap: clamp(2.75rem, 8vh, 5.5rem);
+  max-width: 62rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.article {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  align-items: baseline;
+}
+
+.article__numero {
+  font-size: 0.8125rem;
+  letter-spacing: 0.16em;
+}
+
+.article__texte {
+  margin: 0;
+  font-size: clamp(1.5rem, 3.4vw, 2.875rem);
+  line-height: 1.22;
+  text-wrap: pretty;
+}
+
+.article__regle,
+.article__chute {
+  display: block;
+}
+
+.article__chute {
+  font-style: italic;
+}
+
+/* Le jour, on ne dit pas la chute. Elle garde sa place et reste lisible par les lecteurs d'écran. */
+.js[data-state='jour'] .article__chute {
+  opacity: 0;
+  user-select: none;
+}
+
+/* Le pied */
+.pied {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: center;
+  padding: clamp(3rem, 10vh, 6rem) var(--marge) clamp(2.5rem, 7vh, 4rem);
+  text-align: center;
+}
+
+.pied p {
+  margin: 0;
+}
+
+.pied__mot {
+  font-family: var(--display);
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.pied__promesse {
+  font-size: 1.125rem;
+  font-style: italic;
+}
+
+.pied__signature {
+  margin-top: 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 40rem) {
+  .article {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+  }
+
+  .fil__consigne {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fil__ligne,
+  .fil__consigne {
+    transition: none;
+  }
+
+  .fil:hover .turlutte {
+    animation: none;
+  }
+}

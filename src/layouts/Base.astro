@@ -1,0 +1,45 @@
+---
+import '@fontsource/libre-caslon-display/latin-400.css';
+import '@fontsource/libre-caslon-display/latin-ext-400.css';
+import '@fontsource/libre-caslon-text/latin-400.css';
+import '@fontsource/libre-caslon-text/latin-400-italic.css';
+import '@fontsource/libre-caslon-text/latin-700.css';
+import '@fontsource/libre-caslon-text/latin-ext-400.css';
+import '@fontsource/libre-caslon-text/latin-ext-400-italic.css';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="fr" data-state="jour">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#F6F1E4" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- Avant le premier affichage : choix mémorisé, sinon l'heure du visiteur. Sans script, c'est le jour. -->
+    <script is:inline>
+      (function () {
+        var racine = document.documentElement;
+        racine.classList.add('js');
+        var choix = null;
+        try {
+          choix = localStorage.getItem('turlutte-etat');
+        } catch (e) {}
+        var heure = new Date().getHours();
+        var nuit = heure >= 21 || heure < 6;
+        racine.dataset.state = choix === 'jour' || choix === 'nuit' ? choix : nuit ? 'nuit' : 'jour';
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

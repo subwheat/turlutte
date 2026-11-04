@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import Fil from '../components/Fil.astro';
+import { articles } from '../data/manuel';
+---
+<Base
+  title="Turlutte — Manuel de savoir-vivre"
+  description="Manuel de savoir-vivre à l’usage des mauvaises fréquentations. Good manners × bad habits."
+>
+  <Fil />
+
+  <header class="tete">
+    <p class="tete__marque">
+      <span class="seul-jour">Good manners</span>
+      <span class="seule-nuit">Bad habits</span>
+    </p>
+    <h1 class="tete__titre">Manuel de savoir-vivre</h1>
+    <p class="tete__sous-titre">à l’usage des mauvaises fréquentations</p>
+  </header>
+
+  <div class="rayures" aria-hidden="true">
+    <span></span><span></span><span></span><span class="rayures__partie"></span>
+  </div>
+
+  <main class="manuel">
+    <ol class="manuel__articles">
+      {articles.map((a) => (
+        <li class="article">
+          <span class="article__numero" aria-hidden="true">{a.numero}</span>
+          <p class="article__texte">
+            <span class="article__regle">{a.regle}</span>
+            <span class="article__chute">{a.chute}</span>
+          </p>
+        </li>
+      ))}
+    </ol>
+  </main>
+
+  <footer class="pied">
+    <p class="pied__mot">Turlutte</p>
+    <p class="pied__promesse">Fait pour les gens qui savent.</p>
+    <p class="pied__signature">Good manners × Bad habits</p>
+  </footer>
+</Base>
