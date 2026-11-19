@@ -2,7 +2,9 @@
 import Base from '../layouts/Base.astro';
 import Carte from '../components/Carte.astro';
 import ListeArticles from '../components/ListeArticles.astro';
+import Rayures from '../components/Rayures.astro';
 import { parSlug, vestiaires } from '../data/catalogue';
+const camps = [{ nom: 'Good manners', moment: 'jour' }, { nom: 'Bad habits', moment: 'nuit' }];
 const selection = ['un-peu', 'capitalisme', 'pull-creme', 'mug-lundi'].map((s) => parSlug(s)!);
 ---
 <Base title="Turlutte — Manuel de savoir-vivre">
@@ -11,20 +13,27 @@ const selection = ['un-peu', 'capitalisme', 'pull-creme', 'mug-lundi'].map((s) =
     <h1 class="tete__titre">Manuel de savoir-vivre</h1>
     <p class="tete__sous-titre">à l’usage des mauvaises fréquentations</p>
   </section>
-  <div class="rayures" aria-hidden="true"><span></span><span></span><span></span><span class="rayures__partie"></span></div>
+  <Rayures partie={3} />
 
   <section class="cadre section" aria-labelledby="titre-vestiaires">
     <h2 id="titre-vestiaires" class="surtitre">Les vestiaires</h2>
-    <ul class="vestiaires">
-      {vestiaires.map((v) => (
-        <li>
-          <a class="vestiaire" href={`/vestiaires/${v.slug}/`}>
-            <span class="vestiaire__nom">{v.nom}</span>
-            <span class="vestiaire__promesse">{v.promesse}</span>
-          </a>
-        </li>
+    <div class="camps">
+      {camps.map((c) => (
+        <div class:list={['camp', `camp--${c.moment}`]}>
+          <p class="camp__tete"><span class="camp__nom">{c.nom}</span><span class="camp__moment">{c.moment === 'jour' ? 'le jour' : 'la nuit'}</span></p>
+          <ul class="vestiaires">
+            {vestiaires.filter((v) => v.camp === c.nom).map((v) => (
+              <li>
+                <a class="vestiaire" href={`/vestiaires/${v.slug}/`}>
+                  <span class="vestiaire__nom">{v.nom}</span>
+                  <span class="vestiaire__promesse">{v.promesse}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
-    </ul>
+    </div>
   </section>
 
   <section class="cadre section" aria-labelledby="titre-selection">

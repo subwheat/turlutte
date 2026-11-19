@@ -1,14 +1,19 @@
 ---
+// Le manuel en deux colonnes, comme le manifeste : la turlutte pend au bout du trait du milieu.
+import Turlutte from './Turlutte.astro';
 import { articles } from '../data/manuel';
 ---
-<ol class="manuel__articles">
-  {articles.map((a, i) => (
-    <li class="article">
-      <span class="article__numero" aria-hidden="true">{a.numero}</span>
-      <a class="article__texte" href={`/manuel/article-${i + 1}/`}>
-        <span class="article__regle">{a.regle}</span>
-        <span class="article__chute">{a.chute}</span>
-      </a>
-    </li>
-  ))}
-</ol>
+<div class="manuel">
+  <ol class="manuel__articles">
+    {articles.map((a, i) => (
+      <li class="article">
+        <span class="article__numero" aria-hidden="true">{a.numero}</span>
+        <a class="article__texte" href={`/manuel/article-${i + 1}/`}>
+          <span class="article__regle">{a.regle}</span>
+          <span class="article__chute">{a.chute}</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+  <div class="manuel__fin"><Turlutte /></div>
+</div>
