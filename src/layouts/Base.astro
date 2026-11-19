@@ -8,6 +8,8 @@ import '@fontsource/libre-caslon-text/latin-ext-400.css';
 import '@fontsource/libre-caslon-text/latin-ext-400-italic.css';
 import '../styles/global.css';
 import Fil from '../components/Fil.astro';
+import Rayures from '../components/Rayures.astro';
+import Turlutte from '../components/Turlutte.astro';
 
 interface Props { title: string; description?: string }
 const { title, description = 'Good manners × bad habits.' } = Astro.props;
@@ -50,8 +52,12 @@ const { title, description = 'Good manners × bad habits.' } = Astro.props;
     </header>
     <main id="contenu"><slot /></main>
     <footer class="pied">
-      <p class="pied__mot">Turlutte</p>
-      <p class="pied__promesse">Fait pour les gens qui savent.</p>
+      <div class="pied__marque">
+        <Turlutte />
+        <p class="pied__mot">Turlutte</p>
+        <p class="pied__promesse"><span class="seul-jour">Fait pour les gens qui savent.</span><span class="seule-nuit">Endoume × Belleville</span></p>
+      </div>
+      <Rayures partie={3} />
       <nav class="pied__nav" aria-label="Pied de page">
         <a href="/coulisses/">Les coulisses</a>
         <a href="/aide/">Aide</a>

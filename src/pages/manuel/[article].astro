@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Carte from '../../components/Carte.astro';
+import Rayures from '../../components/Rayures.astro';
 import { articles, type Article } from '../../data/manuel';
 import { produits } from '../../data/catalogue';
 export function getStaticPaths() {
@@ -11,13 +12,16 @@ const pieces = produits.filter((p) => p.article === n && p.rayon !== 'baddies');
 const suivant = n < 12 ? n + 1 : 1;
 ---
 <Base title={`Turlutte — Article ${a.numero}`}>
-  <div class="cadre page">
+  <div class="cadre page affiche">
     <p class="surtitre"><a href="/manuel/">Le manuel</a></p>
     <p class="regle__numero">Article {a.numero}</p>
     <h1 class="regle">
       <span class="article__regle">{a.regle}</span>
       <span class="article__chute">{a.chute}</span>
     </h1>
+  </div>
+  <Rayures nombre={6} affiche />
+  <div class="cadre">
     {pieces.length > 0 && <div class="grille section">{pieces.map((p) => <Carte produit={p} />)}</div>}
     <p class="section"><a class="lien" href={`/manuel/article-${suivant}/`}>Article suivant</a></p>
   </div>

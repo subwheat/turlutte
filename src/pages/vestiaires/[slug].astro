@@ -15,7 +15,10 @@ const { v } = Astro.props as { v: Vestiaire };
     {v.slug === 'la-vertu' && (
       <figure class="planche">
         <img src="/tailleur.jpg" alt="Femme en tailleur crème dans une ruelle, la nuit, au flash" width="784" height="1168" />
-        <figcaption>On ne court pas après l’argent. <em>On sait où il dîne.</em></figcaption>
+        <figcaption>
+          <span class="planche__phrase">On ne court pas après l’argent. <em>On sait où il dîne.</em></span>
+          <span class="planche__numero">Planche V</span>
+        </figcaption>
       </figure>
     )}
     <div class="grille grille--ample">{duRayon(v.slug).map((p) => <Carte produit={p} />)}</div>

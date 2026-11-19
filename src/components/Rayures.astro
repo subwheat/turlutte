@@ -1,0 +1,18 @@
+---
+// La marinière. La nuit, une rayure passe au phosphore ; sur l'affiche, elle quitte le rang
+// et la turlutte y mord.
+import Turlutte from './Turlutte.astro';
+interface Props { nombre?: number; partie?: number; affiche?: boolean }
+const { nombre = 4, partie = nombre, affiche = false } = Astro.props;
+const rangs = Array.from({ length: nombre }, (_, i) => i + 1);
+---
+<div class:list={['rayures', { 'rayures--affiche': affiche }]} aria-hidden="true">
+  {rangs.map((n) => n === partie
+    ? <span class="rayures__partie">{affiche && (
+        <span class="rayures__prise seule-nuit">
+          <svg class="rayures__ligne" viewBox="0 0 58 56" focusable="false"><path d="M0 2C40 2 58 16 58 56" /></svg>
+          <Turlutte />
+        </span>
+      )}</span>
+    : <span></span>)}
+</div>

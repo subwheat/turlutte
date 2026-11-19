@@ -143,8 +143,17 @@ body {
 }
 
 /* En-tête */
+/* Centré comme le manifeste. La marge est la même des deux côtés pour laisser la place au fil. */
 .tete {
-  padding: clamp(2rem, 6vh, 4rem) var(--place-du-fil) clamp(2rem, 6vh, 4rem) var(--marge);
+  display: grid;
+  justify-items: center;
+  padding: clamp(2rem, 6vh, 4rem) var(--place-du-fil) clamp(2.5rem, 7vh, 4.5rem);
+  text-align: center;
+}
+
+.tete .surtitre {
+  font-weight: 400;
+  letter-spacing: 0.32em;
 }
 
 [data-state='jour'] .seule-nuit,
@@ -153,7 +162,7 @@ body {
 }
 
 .tete__titre {
-  max-width: 11ch;
+  max-width: 12ch;
   margin: 0;
   font-family: var(--display);
   font-size: clamp(3.25rem, 10vw, 9rem);
@@ -186,31 +195,112 @@ body {
   background: var(--signal);
 }
 
-/* Le manuel */
+/* L'affiche : six rayures épaisses. La nuit, la dernière quitte le rang et la turlutte y mord. */
+.rayures--affiche {
+  gap: clamp(0.625rem, 1.4vw, 1rem);
+}
+
+.rayures--affiche span {
+  height: clamp(0.625rem, 1.4vw, 1rem);
+}
+
+.rayures--affiche .rayures__partie {
+  position: relative;
+  transition: width 650ms cubic-bezier(0.7, 0, 0.2, 1);
+}
+
+[data-state='nuit'] .rayures--affiche .rayures__partie {
+  width: 76%;
+}
+
+/* La turlutte pend sous la marinière : on lui garde sa place, sans déborder sur les côtés. */
+[data-state='nuit'] .rayures--affiche {
+  overflow-x: clip;
+  padding-bottom: 12rem;
+}
+
+.rayures .rayures__prise {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 3.6rem;
+  height: auto;
+  background: none;
+}
+
+.rayures__ligne {
+  display: block;
+  width: 3.6rem;
+  height: 3.5rem;
+  overflow: visible;
+  fill: none;
+  stroke: var(--signal);
+  stroke-width: 3;
+}
+
+.rayures__prise .turlutte {
+  position: absolute;
+  top: calc(3.5rem - 0.6rem);
+  left: calc(3.6rem - 2.375rem);
+  width: 4.75rem;
+  height: 11.875rem;
+  color: var(--signal);
+}
+
+/* Le manuel : deux colonnes de six, un trait au milieu, la turlutte au bout du trait. */
+.manuel {
+  max-width: 68rem;
+}
+
 .manuel__articles {
+  position: relative;
   display: grid;
-  gap: clamp(2.75rem, 8vh, 5.5rem);
-  max-width: 62rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(6, auto);
+  grid-auto-flow: column;
+  gap: clamp(2.25rem, 6vh, 4rem) clamp(3rem, 7vw, 6rem);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+.manuel__articles::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: calc(-1 * clamp(1.5rem, 4vh, 2.5rem));
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--encre);
+}
+
+.manuel__fin {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+.manuel__fin .turlutte {
+  width: 3.25rem;
+  height: 8.125rem;
+  margin-top: -2px;
+}
+
 .article {
   display: grid;
-  grid-template-columns: 3.25rem minmax(0, 1fr);
-  align-items: baseline;
+  gap: 0.35rem;
 }
 
 .article__numero {
   font-size: 0.8125rem;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
 }
 
 .article__texte {
   margin: 0;
-  font-size: clamp(1.5rem, 3.4vw, 2.875rem);
-  line-height: 1.22;
+  font-size: clamp(1.25rem, 2.3vw, 1.875rem);
+  line-height: 1.32;
   text-wrap: pretty;
 }
 
@@ -230,14 +320,34 @@ body {
 }
 
 /* Le pied */
+/* Le pied reprend la planche du système : le symbole, le mot, la promesse, la marinière. */
 .pied {
   display: grid;
   gap: 0.75rem;
   justify-items: center;
-  margin-top: clamp(3rem, 8vh, 6rem);
-  padding: clamp(3rem, 8vh, 5rem) var(--marge) clamp(2rem, 5vh, 3rem);
-  border-top: 2px solid var(--encre);
+  margin-top: clamp(4rem, 10vh, 7rem);
+  padding: 0 0 clamp(2rem, 5vh, 3rem);
   text-align: center;
+}
+
+.pied__marque {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: center;
+  max-width: 100%;
+  padding: 0 var(--marge) clamp(2rem, 5vh, 3rem);
+}
+
+.pied__marque .turlutte {
+  width: clamp(3.5rem, 7vw, 5.5rem);
+  height: clamp(8.75rem, 17.5vw, 13.75rem);
+  margin-bottom: 0.75rem;
+  color: var(--signal);
+}
+
+.pied .rayures {
+  justify-self: stretch;
+  margin-bottom: clamp(1.5rem, 4vh, 2.5rem);
 }
 
 .pied p {
@@ -246,14 +356,14 @@ body {
 
 .pied__mot {
   font-family: var(--display);
-  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  font-size: clamp(2.25rem, 9vw, 6.5rem);
   letter-spacing: 0.1em;
   line-height: 1;
   text-transform: uppercase;
 }
 
 .pied__promesse {
-  font-size: 1.125rem;
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
   font-style: italic;
 }
 
@@ -401,23 +511,68 @@ input:focus-visible {
   color: var(--signal);
 }
 
-/* Vestiaires */
+/* Vestiaires : le diptyque du système. Le jour est toujours crème, la nuit toujours bleue. */
+.camps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
+  border: 2px solid var(--encre);
+}
+
+.camp {
+  display: grid;
+  align-content: start;
+  gap: clamp(1.5rem, 4vh, 2.5rem);
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.camp--jour {
+  background: var(--creme);
+  color: var(--bleu);
+}
+
+.camp--nuit {
+  background: var(--bleu);
+  color: var(--creme);
+}
+
+.camp a:focus-visible {
+  outline-color: currentColor;
+}
+
+.camp__tete {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin: 0;
+}
+
+.camp__nom {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.camp__moment {
+  font-style: italic;
+}
+
 .vestiaires {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
-  gap: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
+  gap: 1rem clamp(1.5rem, 3vw, 2.5rem);
   margin: 0;
   padding: 0;
-  border-top: 2px solid var(--encre);
   list-style: none;
 }
 
 .vestiaire {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.35rem;
   height: 100%;
-  padding: 1.25rem 1rem 1.5rem 0;
+  padding: 0.25rem 0;
   text-decoration: none;
 }
 
@@ -628,9 +783,28 @@ input:focus-visible {
 }
 
 .planche figcaption {
-  margin-top: 1rem;
-  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
-  line-height: 1.25;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+.planche__phrase {
+  font-size: clamp(1.25rem, 2.4vw, 1.875rem);
+  line-height: 1.2;
+}
+
+.planche__phrase em {
+  display: block;
+}
+
+.planche__numero {
+  flex: none;
+  padding-bottom: 0.4rem;
+  font-size: 0.8125rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 /* Fiche produit */
@@ -795,13 +969,29 @@ input:focus-visible {
   text-transform: uppercase;
 }
 
+/* L'article en affiche : la règle en Display le jour, la chute en italique la nuit. */
+.affiche {
+  padding-bottom: clamp(3rem, 9vh, 6rem);
+}
+
 .regle {
-  max-width: 18ch;
+  max-width: 16ch;
   margin: 0;
   font-family: var(--texte);
-  font-size: clamp(2.25rem, 6vw, 5rem);
+  font-size: clamp(2.5rem, 7.5vw, 6.5rem);
   font-weight: 400;
-  line-height: 1.12;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.regle .article__regle {
+  font-family: var(--display);
+}
+
+.regle .article__chute {
+  margin-top: 0.2em;
+  font-size: 0.82em;
+  line-height: 1.1;
 }
 
 .article__texte {
@@ -892,10 +1082,32 @@ a.article__texte:hover .article__regle {
   margin-top: 1rem;
 }
 
-@media (max-width: 40rem) {
-  .article {
-    grid-template-columns: 2.25rem minmax(0, 1fr);
+@media (max-width: 48rem) {
+  .manuel__articles {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-flow: row;
   }
+
+  .manuel__articles::before {
+    display: none;
+  }
+
+  .manuel__fin {
+    border-top: 2px solid var(--encre);
+    padding-top: clamp(1.5rem, 4vh, 2.5rem);
+  }
+
+  .manuel__fin .turlutte {
+    margin-top: calc(-1 * clamp(1.5rem, 4vh, 2.5rem) - 2px);
+  }
+}
+
+@media (max-width: 40rem) {
+  [data-state='nuit'] .rayures--affiche .rayures__partie {
+    width: 62%;
+  }
+
 
   .fil__consigne {
     display: none;
@@ -937,7 +1149,8 @@ a.article__texte:hover .article__regle {
 @media (prefers-reduced-motion: reduce) {
   .fil__ligne,
   .fil__consigne,
-  .piece__tour {
+  .piece__tour,
+  .rayures--affiche .rayures__partie {
     transition: none;
   }
 
