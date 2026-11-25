@@ -1,16 +1,17 @@
 {%- comment -%} Bloc 2 : six à huit pièces. Les produits du Vice ne s'affichent jamais ici. {%- endcomment -%}
 {%- assign tag_vice = settings.vice_tag_produit | default: 'vice' -%}
+{%- assign source = section.settings.collection | default: collections.all -%}
 <section class="section pieces" aria-labelledby="pieces-{{ section.id }}">
   <div class="section__tete">
     <h2 id="pieces-{{ section.id }}" class="section__titre">{{ section.settings.titre }}</h2>
-    {%- if section.settings.collection != blank -%}
-      <a class="lien-fleche" href="{{ section.settings.collection.url }}">Tout voir</a>
+    {%- if source != blank -%}
+      <a class="lien-fleche" href="{{ source.url }}">Tout voir</a>
     {%- endif -%}
   </div>
   <ul class="grille" role="list">
-    {%- if section.settings.collection != blank and section.settings.collection.products_count > 0 -%}
+    {%- if source != blank and source.products_count > 0 -%}
       {%- assign n = 0 -%}
-      {%- for p in section.settings.collection.products -%}
+      {%- for p in source.products -%}
         {%- if p.tags contains tag_vice -%}{%- continue -%}{%- endif -%}
         {%- if n >= section.settings.nombre -%}{%- break -%}{%- endif -%}
         <li>{% render 'carte-produit', produit: p, prioritaire: forloop.first %}</li>
