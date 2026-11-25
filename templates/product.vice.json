@@ -1,1 +1,13 @@
-{"sections":{"main":{"type":"main-product","settings":{}}},"order":["main"]}
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "guide_tailles": "shopify://pages/guide-des-tailles"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

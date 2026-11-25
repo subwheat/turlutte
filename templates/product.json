@@ -1,1 +1,20 @@
-{"sections":{"main":{"type":"main-product","settings":{}},"lies":{"type":"produits-lies","settings":{"titre":"Du même vestiaire"}}},"order":["main","lies"]}
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "guide_tailles": "shopify://pages/guide-des-tailles"
+      }
+    },
+    "lies": {
+      "type": "produits-lies",
+      "settings": {
+        "titre": "Du même vestiaire"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "lies"
+  ]
+}

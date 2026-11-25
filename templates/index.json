@@ -48,7 +48,7 @@
           "settings": {
             "nom": "Le Vice",
             "accroche": "Vous n’êtes pas arrivé ici par hasard.",
-            "lien": "/pages/le-vice"
+            "lien": "shopify://pages/le-vice"
           }
         }
       },
@@ -105,7 +105,7 @@
         "numero": "XI",
         "regle": "On ne juge personne.",
         "chute": "On attend d’être dans le taxi.",
-        "lien": "/pages/le-manuel",
+        "lien": "shopify://pages/le-manuel",
         "texte_lien": "Lire le Manuel"
       }
     },
