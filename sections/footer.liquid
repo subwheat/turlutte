@@ -1,0 +1,70 @@
+<footer class="pied">
+  <div class="rayures pied__rayures" aria-hidden="true"><span></span><span class="rayures__partie"></span><span></span></div>
+
+  <div class="pied__grille">
+    <div class="pied__marque">
+      <p class="pied__mot">{{ shop.name }}</p>
+      <p class="pied__promesse">{{ section.settings.promesse }}</p>
+    </div>
+
+    {%- for bloc in section.blocks -%}
+      {%- case bloc.type -%}
+        {%- when 'menu' -%}
+          <nav class="pied__nav" aria-label="{{ bloc.settings.titre | escape }}" {{ bloc.shopify_attributes }}>
+            <p class="pied__titre">{{ bloc.settings.titre }}</p>
+            <ul>
+              {%- for lien in bloc.settings.menu.links -%}
+                <li><a href="{{ lien.url }}">{{ lien.title | escape }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- when 'newsletter' -%}
+          <div class="pied__newsletter" {{ bloc.shopify_attributes }}>
+            <p class="pied__titre">{{ bloc.settings.titre }}</p>
+            {%- form 'customer', id: 'newsletter-pied', class: 'formulaire-ligne' -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <label class="visuellement-cache" for="newsletter-pied-email">E-mail</label>
+              <input id="newsletter-pied-email" type="email" name="contact[email]" autocomplete="email" placeholder="Votre e-mail" required>
+              <button type="submit">S'inscrire</button>
+              {%- if form.posted_successfully? -%}<p class="formulaire__ok" role="status">C'est noté. On ne dira rien.</p>{%- endif -%}
+              {%- if form.errors -%}<p class="formulaire__erreur" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>{%- endif -%}
+            {%- endform -%}
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="pied__bas">
+    <p class="pied__signature">Good manners × Bad habits</p>
+    {%- if settings.instagram != blank -%}<a href="{{ settings.instagram }}" rel="noopener">Instagram</a>{%- endif -%}
+    <p>© {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Pied de page",
+  "class": "section-pied",
+  "settings": [
+    { "type": "text", "id": "promesse", "label": "Promesse", "default": "Fait pour les gens qui savent." }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre", "default": "Aide" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre", "default": "Ceux qui savent sont prévenus en premier." }
+      ]
+    }
+  ]
+}
+{% endschema %}

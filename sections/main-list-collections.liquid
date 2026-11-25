@@ -1,0 +1,23 @@
+<section class="page">
+  <h1 class="page__titre">{{ section.settings.titre }}</h1>
+  <ul class="vestiaires__grille" role="list">
+    {%- for c in collections -%}
+      {%- if c.handle == 'le-vice' or c.handle == 'frontpage' or c.handle == 'all' -%}{%- continue -%}{%- endif -%}
+      {%- assign nom_c = c.title | append: ', campagne' -%}
+      <li class="tuile">
+        <a class="tuile__lien" href="{{ c.url }}">
+          {% render 'visuel', image: c.image, nom: nom_c, ratio: '3/4', tailles: '(min-width: 990px) 33vw, 100vw' %}
+          <span class="tuile__texte"><span class="tuile__nom">{{ c.title | escape }}</span>
+          {%- if c.metafields.custom.accroche != blank -%}<span class="tuile__accroche">{{ c.metafields.custom.accroche.value }}</span>{%- endif -%}</span>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Les vestiaires (liste)",
+  "settings": [ { "type": "text", "id": "titre", "label": "Titre", "default": "Les vestiaires" } ]
+}
+{% endschema %}

@@ -1,0 +1,26 @@
+{%- comment -%} Bloc 5 : une maxime du Manuel ; la chute n'apparaît que la nuit (sans JavaScript, elle reste visible). {%- endcomment -%}
+<section class="section maxime">
+  <div class="rayures" aria-hidden="true"><span></span><span class="rayures__partie"></span><span></span></div>
+  <blockquote class="maxime__texte">
+    {%- if section.settings.numero != blank -%}<span class="maxime__numero">{{ section.settings.numero }}</span>{%- endif -%}
+    <p class="maxime__regle">{{ section.settings.regle }}</p>
+    <p class="maxime__chute chute">{{ section.settings.chute }}</p>
+  </blockquote>
+  {%- if section.settings.lien != blank -%}
+    <a class="lien-fleche" href="{{ section.settings.lien }}">{{ section.settings.texte_lien }}</a>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Une maxime",
+  "settings": [
+    { "type": "text", "id": "numero", "label": "Numéro", "default": "XI" },
+    { "type": "text", "id": "regle", "label": "La règle", "default": "On ne juge personne." },
+    { "type": "text", "id": "chute", "label": "La chute (la nuit)", "default": "On attend d’être dans le taxi." },
+    { "type": "url", "id": "lien", "label": "Lien", "default": "/pages/le-manuel" },
+    { "type": "text", "id": "texte_lien", "label": "Texte du lien", "default": "Lire le Manuel" }
+  ],
+  "presets": [{ "name": "Une maxime" }]
+}
+{% endschema %}

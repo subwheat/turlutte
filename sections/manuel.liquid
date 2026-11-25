@@ -1,0 +1,40 @@
+{%- comment -%} Le Manuel de savoir-vivre : chaque maxime a sa règle et sa chute ; la chute apparaît la nuit. {%- endcomment -%}
+<section class="page manuel">
+  <h1 class="page__titre">{{ section.settings.titre }}</h1>
+  <p class="page__chapo">{{ section.settings.chapo }}</p>
+  <ol class="manuel__articles" role="list">
+    {%- for bloc in section.blocks -%}
+      <li class="article" {{ bloc.shopify_attributes }}>
+        <span class="article__numero">{{ bloc.settings.numero }}</span>
+        <p class="article__texte">
+          <span class="article__regle">{{ bloc.settings.regle }}</span>
+          <span class="article__chute chute">{{ bloc.settings.chute }}</span>
+        </p>
+      </li>
+    {%- endfor -%}
+  </ol>
+  <div class="rayures" aria-hidden="true"><span></span><span class="rayures__partie"></span><span></span></div>
+  <p class="manuel__signature">Good manners × Bad habits</p>
+</section>
+
+{% schema %}
+{
+  "name": "Le Manuel",
+  "settings": [
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Manuel de savoir-vivre à l’usage des mauvaises fréquentations" },
+    { "type": "textarea", "id": "chapo", "label": "Chapô", "default": "Ce n’est pas une blague. Ce n’est pas non plus sérieux. C’est juste le degré de lecture qui change." }
+  ],
+  "blocks": [
+    {
+      "type": "maxime",
+      "name": "Maxime",
+      "settings": [
+        { "type": "text", "id": "numero", "label": "Numéro", "default": "I" },
+        { "type": "text", "id": "regle", "label": "Règle" },
+        { "type": "text", "id": "chute", "label": "Chute (la nuit)" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Le Manuel" }]
+}
+{% endschema %}

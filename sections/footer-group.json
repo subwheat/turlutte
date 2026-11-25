@@ -1,0 +1,16 @@
+{
+  "type": "footer",
+  "name": "Pied de page",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "aide": { "type": "menu", "settings": { "titre": "Aide", "menu": "footer" } },
+        "newsletter": { "type": "newsletter", "settings": { "titre": "Ceux qui savent sont prévenus en premier." } }
+      },
+      "block_order": ["aide", "newsletter"],
+      "settings": { "promesse": "Fait pour les gens qui savent." }
+    }
+  },
+  "order": ["footer"]
+}

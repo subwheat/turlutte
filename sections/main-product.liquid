@@ -1,0 +1,179 @@
+{%- comment -%}
+  Fiche produit. Ordre du CDC 09 : galerie (4 images min.), en-tête (accroche, vestiaire, pièce et coloris, prix TTC),
+  achat (taille + guide, bouton collant sur téléphone), promesse, le mot de la maison (phrase + chute la nuit),
+  détails en accordéons.
+  Metafields produit (espace custom) : vestiaire, phrase_jour, chute_nuit, packshot_nuit_face, packshot_nuit_dos,
+  technique, matiere_origine, coupe, entretien.
+{%- endcomment -%}
+{%- liquid
+  assign v = product.selected_or_first_available_variant
+  assign m = product.metafields.custom
+  assign vestiaire = m.vestiaire.value
+  assign nuit_face = m.packshot_nuit_face.value
+  assign nuit_dos = m.packshot_nuit_dos.value
+  assign noms = 'Packshot face, jour|Packshot dos, jour|Porté|Gros plan de l’inscription' | split: '|'
+  assign nb_medias = product.media.size
+-%}
+{%- liquid
+  assign bloque = false
+  assign tag_vice = settings.vice_tag_produit | default: 'vice'
+  if product.tags contains tag_vice
+    assign tag_invite = settings.vice_tag_invite | default: 'vice-invite'
+    unless customer and customer.tags contains tag_invite
+      assign bloque = true
+    endunless
+  endif
+-%}
+{%- if bloque -%}
+  <section class="vice vice--court">
+    <p class="vice__surtitre">Le Vice</p>
+    <h1 class="vice__titre">Vous n’êtes pas arrivé ici par hasard.</h1>
+    <p class="vice__chapo">Cette pièce est réservée aux invités.</p>
+    <a class="bouton bouton--plein" href="{{ settings.vice_page | default: '/pages/le-vice' }}">Demander une invitation</a>
+    <p class="vice__connexion">Déjà invité ? <a href="{{ routes.account_login_url }}?return_url={{ request.path | url_encode }}">Se connecter</a></p>
+  </section>
+{%- else -%}
+<section class="fiche" data-fiche>
+  <div class="fiche__galerie" aria-label="Photos">
+    <ul class="galerie" role="list" data-galerie>
+      {%- for i in (0..3) -%}
+        {%- assign media = product.media[i] -%}
+        <li class="galerie__item">
+          {%- if i == 0 -%}
+            <div class="seul-jour-image">{% render 'visuel', image: media.preview_image, nom: noms[i], ratio: '4/5', tailles: '(min-width: 990px) 50vw, 100vw', prioritaire: true %}</div>
+            <div class="seule-nuit-image">{% render 'visuel', image: nuit_face, nom: 'Packshot face, nuit', ratio: '4/5', tailles: '(min-width: 990px) 50vw, 100vw' %}</div>
+          {%- elsif i == 1 and nuit_dos != blank -%}
+            <div class="seul-jour-image">{% render 'visuel', image: media.preview_image, nom: noms[i], ratio: '4/5', tailles: '(min-width: 990px) 50vw, 100vw' %}</div>
+            <div class="seule-nuit-image">{% render 'visuel', image: nuit_dos, nom: 'Packshot dos, nuit', ratio: '4/5', tailles: '(min-width: 990px) 50vw, 100vw' %}</div>
+          {%- else -%}
+            {% render 'visuel', image: media.preview_image, nom: noms[i], ratio: '4/5', tailles: '(min-width: 990px) 50vw, 100vw' %}
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+      {%- if nb_medias > 4 -%}
+        {%- for media in product.media offset: 4 -%}
+          <li class="galerie__item">{% render 'visuel', image: media.preview_image, ratio: '4/5', tailles: '(min-width: 990px) 50vw, 100vw' %}</li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+  </div>
+
+  <div class="fiche__infos">
+    <p class="fiche__vestiaire">
+      {%- if vestiaire != blank -%}{{ vestiaire }}{%- endif -%}
+      {%- if product.type != blank %} · {{ product.type }}{% endif -%}
+    </p>
+    <h1 class="fiche__nom">{{ product.title | escape }}</h1>
+    <p class="fiche__prix" data-prix>{{ v.price | money }}</p>
+    <p class="fiche__ttc">TTC{% if cart.taxes_included == false %}, taxes calculées au paiement{% endif %}</p>
+
+    {%- form 'product', product, class: 'achat', data-achat: '', novalidate: 'novalidate' -%}
+      <input type="hidden" name="id" value="{{ v.id }}" data-variante>
+      {%- unless product.has_only_default_variant -%}
+        {%- for option in product.options_with_values -%}
+          <fieldset class="achat__option">
+            <legend>
+              {{ option.name | escape }}
+              {%- if option.name == 'Taille' and section.settings.guide_tailles != blank -%}
+                <a class="achat__guide" href="{{ section.settings.guide_tailles }}">Guide des tailles</a>
+              {%- endif -%}
+            </legend>
+            <div class="achat__valeurs">
+              {%- for valeur in option.values -%}
+                <label class="pastille">
+                  <input type="radio" name="option{{ option.position }}" value="{{ valeur | escape }}" form="" data-option="{{ forloop.parentloop.index0 }}"{% if option.selected_value == valeur %} checked{% endif %}>
+                  <span>{{ valeur | escape }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </fieldset>
+        {%- endfor -%}
+      {%- endunless -%}
+
+      <div class="achat__collant">
+        <button type="submit" name="add" class="bouton bouton--plein" data-ajouter{% unless v.available %} disabled{% endunless %}>
+          <span data-texte-bouton>{% if v.available %}Ajouter au panier{% else %}Bientôt de retour{% endif %}</span>
+        </button>
+      </div>
+      <p class="achat__message" role="status" data-message hidden></p>
+      <script type="application/json" data-variantes>{{ product.variants | json }}</script>
+    {%- endform -%}
+
+    {%- if section.settings.promesse != blank -%}
+      <p class="fiche__promesse">{{ section.settings.promesse }}</p>
+    {%- endif -%}
+
+    {%- if m.phrase_jour != blank -%}
+      <div class="fiche__mot">
+        <p class="fiche__phrase">{{ m.phrase_jour.value }}</p>
+        {%- if m.chute_nuit != blank -%}<p class="fiche__chute chute">{{ m.chute_nuit.value }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if product.description != blank -%}
+      <div class="fiche__description rte">{{ product.description }}</div>
+    {%- endif -%}
+
+    <div class="accordeons">
+      <details>
+        <summary>Matière et origine</summary>
+        <div class="rte">
+          {%- if m.matiere_origine != blank -%}{{ m.matiere_origine | metafield_tag }}{%- else -%}{{ section.settings.matiere_defaut }}{%- endif -%}
+        </div>
+      </details>
+      <details>
+        <summary>Coupe et grammage</summary>
+        <div class="rte">{%- if m.coupe != blank -%}{{ m.coupe | metafield_tag }}{%- else -%}<p>À compléter avec la fiche Stanley/Stella.</p>{%- endif -%}</div>
+      </details>
+      <details>
+        <summary>Entretien</summary>
+        <div class="rte">{%- if m.entretien != blank -%}{{ m.entretien | metafield_tag }}{%- else -%}{{ section.settings.entretien_defaut }}{%- endif -%}</div>
+      </details>
+      <details>
+        <summary>Livraison et retours</summary>
+        <div class="rte">{{ section.settings.livraison }}</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+{%- unless product.tags contains settings.vice_tag_produit -%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": {{ request.origin | append: product.url | json }},
+    {%- if product.featured_image -%}"image": [{{ product.featured_image | image_url: width: 1200 | prepend: 'https:' | json }}],{%- endif -%}
+    "description": {{ product.description | strip_html | json }},
+    "brand": { "@type": "Brand", "name": {{ shop.name | json }} },
+    "offers": [
+      {%- for variant in product.variants -%}
+        {
+          "@type": "Offer",
+          {%- if variant.sku != blank -%}"sku": {{ variant.sku | json }},{%- endif -%}
+          "availability": "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price": {{ variant.price | divided_by: 100.00 | json }},
+          "priceCurrency": {{ cart.currency.iso_code | json }},
+          "url": {{ request.origin | append: variant.url | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+</script>
+{%- endunless -%}
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Fiche produit",
+  "settings": [
+    { "type": "url", "id": "guide_tailles", "label": "Page guide des tailles", "default": "/pages/guide-des-tailles" },
+    { "type": "text", "id": "promesse", "label": "Promesse", "default": "Fabriqué pour vous, expédié sous [X] jours. Retours 14 jours." },
+    { "type": "richtext", "id": "matiere_defaut", "label": "Matière et origine (par défaut)", "default": "<p>Coton biologique. Vêtement de base Stanley/Stella, marque membre de Fair Wear. Personnalisé aux Pays-Bas.</p>" },
+    { "type": "richtext", "id": "entretien_defaut", "label": "Entretien (par défaut)", "default": "<p>Lavage à 30 °C sur l’envers. Pas de sèche-linge. Repassage doux sur l’envers, jamais sur l’inscription.</p>" },
+    { "type": "richtext", "id": "livraison", "label": "Livraison et retours", "default": "<p>Livraison en France, Belgique, Suisse et Canada. Suisse et Canada : droits et taxes payés à la livraison. Retours sous 14 jours après réception.</p>" }
+  ]
+}
+{% endschema %}

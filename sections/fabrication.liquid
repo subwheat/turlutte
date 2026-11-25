@@ -1,0 +1,35 @@
+{%- comment -%} Bloc 4 : gros plans qui justifient le prix. {%- endcomment -%}
+<section class="section fabrication" aria-labelledby="fabrication-{{ section.id }}">
+  <h2 id="fabrication-{{ section.id }}" class="section__titre">{{ section.settings.titre }}</h2>
+  <ul class="fabrication__grille" role="list">
+    {%- for bloc in section.blocks -%}
+      <li class="fabrication__item" {{ bloc.shopify_attributes }}>
+        {% render 'visuel', image: bloc.settings.image, nom: bloc.settings.emplacement, ratio: '4/5', tailles: '(min-width: 990px) 33vw, 100vw' %}
+        <h3 class="fabrication__nom">{{ bloc.settings.nom }}</h3>
+        <p class="fabrication__texte">{{ bloc.settings.texte }}</p>
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "La fabrication",
+  "settings": [
+    { "type": "text", "id": "titre", "label": "Titre", "default": "La fabrication" }
+  ],
+  "blocks": [
+    {
+      "type": "detail",
+      "name": "Gros plan",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "emplacement", "label": "Ce que montre l'image (emplacement)", "default": "Gros plan broderie" },
+        { "type": "text", "id": "nom", "label": "Titre", "default": "La broderie" },
+        { "type": "textarea", "id": "texte", "label": "Texte", "default": "Petite, serrée, à hauteur du cœur. Il faut s’approcher." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "La fabrication" }]
+}
+{% endschema %}

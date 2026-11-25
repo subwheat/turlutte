@@ -1,0 +1,17 @@
+<section class="reassurance" aria-label="Nos engagements">
+  <ul role="list">
+    {%- for bloc in section.blocks -%}
+      <li {{ bloc.shopify_attributes }}>{{ bloc.settings.texte }}</li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Réassurance",
+  "blocks": [
+    { "type": "point", "name": "Point", "settings": [ { "type": "text", "id": "texte", "label": "Texte", "default": "Livraison FR, BE, CH, CA" } ] }
+  ],
+  "presets": [{ "name": "Réassurance" }]
+}
+{% endschema %}

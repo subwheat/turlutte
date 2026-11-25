@@ -1,0 +1,21 @@
+<section class="page">
+  <h1 class="page__titre">{{ blog.title | escape }}</h1>
+  {%- paginate blog.articles by 12 -%}
+    <ul class="journal" role="list">
+      {%- for article in blog.articles -%}
+        <li class="journal__item">
+          <a href="{{ article.url }}">
+            {% render 'visuel', image: article.image, nom: 'Image de l’article', ratio: '4/5', tailles: '(min-width: 990px) 33vw, 100vw' %}
+            <h2 class="journal__titre">{{ article.title | escape }}</h2>
+          </a>
+          <p class="journal__date">{{ article.published_at | date: '%d/%m/%Y' }}</p>
+        </li>
+      {%- endfor -%}
+    </ul>
+    {%- if paginate.pages > 1 -%}<nav class="pagination">{{ paginate | default_pagination }}</nav>{%- endif -%}
+  {%- endpaginate -%}
+</section>
+
+{% schema %}
+{ "name": "Journal" }
+{% endschema %}

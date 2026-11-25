@@ -1,0 +1,49 @@
+{%- comment -%}
+  Carte produit de grille. Le prix et le nom ne changent jamais avec la nuit ;
+  seul le décor de la photo change (packshot de nuit en metafield custom.packshot_nuit_face).
+  - produit : objet product (facultatif : sans produit, carte d'emplacement)
+  - prioritaire : charge la première image en priorité
+{%- endcomment -%}
+{%- if produit != blank -%}
+  {%- liquid
+    assign jour = produit.media[0].preview_image
+    assign survol = produit.media[1].preview_image
+    assign nuit = produit.metafields.custom.packshot_nuit_face.value
+    assign vestiaire = produit.metafields.custom.vestiaire.value | default: produit.vendor
+  -%}
+  <article class="carte">
+    <a class="carte__lien" href="{{ produit.url }}">
+      <div class="carte__images{% if survol %} carte__images--survol{% endif %}">
+        <div class="seul-jour-image">
+          {% render 'visuel', image: jour, nom: 'Packshot face, jour', ratio: '4/5', prioritaire: prioritaire %}
+        </div>
+        <div class="seule-nuit-image">
+          {%- if nuit != blank -%}
+            {% render 'visuel', image: nuit, nom: 'Packshot face, nuit', ratio: '4/5' %}
+          {%- else -%}
+            {% render 'visuel', image: jour, nom: 'Packshot face, nuit', ratio: '4/5' %}
+          {%- endif -%}
+        </div>
+        {%- if survol -%}
+          <div class="carte__survol">{% render 'visuel', image: survol, nom: 'Dos ou porté', ratio: '4/5' %}</div>
+        {%- endif -%}
+      </div>
+      <h3 class="carte__nom">{{ produit.title | escape }}</h3>
+    </a>
+    <p class="carte__details">
+      {%- if produit.type != blank %}<span>{{ produit.type | escape }}</span>{% endif -%}
+      {%- if vestiaire != blank and vestiaire != shop.name %}<span>{{ vestiaire | escape }}</span>{% endif -%}
+    </p>
+    <p class="carte__prix">
+      {%- if produit.price_varies -%}dès {% endif -%}
+      {{ produit.price | money }}
+      {%- unless produit.available %} <span class="carte__epuise">Bientôt de retour</span>{% endunless -%}
+    </p>
+  </article>
+{%- else -%}
+  <article class="carte carte--vide">
+    {% render 'visuel', nom: 'Packshot face, jour', ratio: '4/5' %}
+    <h3 class="carte__nom">Accroche à venir</h3>
+    <p class="carte__prix">— €</p>
+  </article>
+{%- endif -%}

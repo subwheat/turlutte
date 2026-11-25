@@ -1,0 +1,10 @@
+<article class="page page--etroite">
+  {%- if article.image -%}{% render 'visuel', image: article.image, ratio: '16/9', tailles: '100vw', prioritaire: true %}{%- endif -%}
+  <h1 class="page__titre">{{ article.title | escape }}</h1>
+  <p class="journal__date">{{ article.published_at | date: '%d/%m/%Y' }}</p>
+  <div class="rte">{{ article.content }}</div>
+</article>
+
+{% schema %}
+{ "name": "Article" }
+{% endschema %}

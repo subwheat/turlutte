@@ -1,0 +1,37 @@
+{%- comment -%} Bloc 2 : six à huit pièces. Les produits du Vice ne s'affichent jamais ici. {%- endcomment -%}
+{%- assign tag_vice = settings.vice_tag_produit | default: 'vice' -%}
+<section class="section pieces" aria-labelledby="pieces-{{ section.id }}">
+  <div class="section__tete">
+    <h2 id="pieces-{{ section.id }}" class="section__titre">{{ section.settings.titre }}</h2>
+    {%- if section.settings.collection != blank -%}
+      <a class="lien-fleche" href="{{ section.settings.collection.url }}">Tout voir</a>
+    {%- endif -%}
+  </div>
+  <ul class="grille" role="list">
+    {%- if section.settings.collection != blank and section.settings.collection.products_count > 0 -%}
+      {%- assign n = 0 -%}
+      {%- for p in section.settings.collection.products -%}
+        {%- if p.tags contains tag_vice -%}{%- continue -%}{%- endif -%}
+        {%- if n >= section.settings.nombre -%}{%- break -%}{%- endif -%}
+        <li>{% render 'carte-produit', produit: p, prioritaire: forloop.first %}</li>
+        {%- assign n = n | plus: 1 -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..section.settings.nombre) -%}
+        <li>{% render 'carte-produit' %}</li>
+      {%- endfor -%}
+    {%- endif -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Les pièces",
+  "settings": [
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Les pièces" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "nombre", "label": "Nombre de pièces", "min": 4, "max": 12, "step": 2, "default": 8 }
+  ],
+  "presets": [{ "name": "Les pièces" }]
+}
+{% endschema %}

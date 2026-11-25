@@ -1,0 +1,57 @@
+<header class="entete">
+  <a class="entete__marque" href="{{ routes.root_url }}">
+    {%- if section.settings.logo != blank -%}
+      {{ section.settings.logo | image_url: width: 320 | image_tag: alt: shop.name, class: 'entete__logo', loading: 'eager' }}
+    {%- else -%}
+      {{ shop.name }}
+    {%- endif -%}
+  </a>
+
+  <button class="entete__menu" type="button" aria-expanded="false" aria-controls="nav" data-menu>Menu</button>
+
+  <nav id="nav" class="nav" aria-label="Navigation principale">
+    <ul class="nav__liste">
+      {%- for lien in section.settings.menu.links -%}
+        <li class="nav__item{% if lien.links != blank %} nav__item--parent{% endif %}">
+          {%- if lien.links != blank -%}
+            <details class="nav__groupe">
+              <summary{% if lien.child_active %} aria-current="page"{% endif %}>{{ lien.title | escape }}</summary>
+              <ul class="nav__sous-liste">
+                {%- for sous in lien.links -%}
+                  <li><a href="{{ sous.url }}"{% if sous.current %} aria-current="page"{% endif %}>{{ sous.title | escape }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </details>
+          {%- else -%}
+            <a href="{{ lien.url }}"{% if lien.current %} aria-current="page"{% endif %}{% if lien.handle contains 'vice' %} class="nav__vice"{% endif %}>{{ lien.title | escape }}</a>
+          {%- endif -%}
+        </li>
+      {%- else -%}
+        <li><a href="{{ routes.all_products_collection_url }}">Boutique</a></li>
+        <li><a href="{{ routes.collections_url }}">Les vestiaires</a></li>
+        <li><a href="/pages/le-manuel">Le Manuel</a></li>
+        <li><a class="nav__vice" href="/pages/le-vice">Le Vice</a></li>
+      {%- endfor -%}
+    </ul>
+  </nav>
+
+  <div class="entete__actions">
+    <button class="interrupteur" type="button" aria-pressed="false" data-interrupteur>
+      <span class="interrupteur__jour">Jour</span><span class="interrupteur__sep" aria-hidden="true">/</span><span class="interrupteur__nuit">Nuit</span>
+    </button>
+    <a class="entete__panier" href="{{ routes.cart_url }}" data-ouvrir-panier aria-haspopup="dialog">
+      Panier <span data-compteur>({{ cart.item_count }})</span>
+    </a>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "En-tête",
+  "class": "section-entete",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo (sinon, le nom de la boutique)" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" }
+  ]
+}
+{% endschema %}

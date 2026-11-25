@@ -1,0 +1,51 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Turlutte",
+    "theme_version": "0.1.0",
+    "theme_author": "UYUNI",
+    "theme_documentation_url": "https://github.com/subwheat/turlutte",
+    "theme_support_url": "https://github.com/subwheat/turlutte"
+  },
+  {
+    "name": "Couleurs",
+    "settings": [
+      { "type": "color", "id": "couleur_creme", "label": "Crème", "default": "#F6F1E4" },
+      { "type": "color", "id": "couleur_bleu", "label": "Bleu profond", "default": "#0E2239" },
+      { "type": "color", "id": "couleur_phosphore", "label": "Phosphore (accent, jamais dominant)", "default": "#DDF56A" }
+    ]
+  },
+  {
+    "name": "Jour et nuit",
+    "settings": [
+      { "type": "paragraph", "content": "Le site s'ouvre en nuit entre ces heures (heure du visiteur). Le choix du visiteur est ensuite mémorisé. Prix, tailles, boutons d'achat et panier ne changent jamais." },
+      { "type": "range", "id": "nuit_debut", "label": "Début de la nuit", "min": 17, "max": 23, "step": 1, "unit": "h", "default": 21 },
+      { "type": "range", "id": "nuit_fin", "label": "Fin de la nuit", "min": 4, "max": 9, "step": 1, "unit": "h", "default": 6 }
+    ]
+  },
+  {
+    "name": "Panier",
+    "settings": [
+      { "type": "checkbox", "id": "une_piece_par_commande", "label": "Une seule pièce par commande (mode AJDN)", "default": false },
+      { "type": "text", "id": "message_une_piece", "label": "Message si une pièce est déjà au panier", "default": "Une pièce à la fois. On a des manières." },
+      { "type": "text", "id": "texte_port", "label": "Ligne livraison du panier", "default": "Livraison 7,90 € en France, offerte dès 100 €. Calculée au paiement." },
+      { "type": "text", "id": "texte_hors_ue", "label": "Mention Suisse et Canada", "default": "Suisse et Canada : droits et taxes payés à la livraison." }
+    ]
+  },
+  {
+    "name": "Le Vice",
+    "settings": [
+      { "type": "text", "id": "vice_tag_invite", "label": "Tag client des invités", "default": "vice-invite" },
+      { "type": "text", "id": "vice_tag_produit", "label": "Tag des produits du Vice", "default": "vice" },
+      { "type": "url", "id": "vice_page", "label": "Page Le Vice" }
+    ]
+  },
+  {
+    "name": "Réseaux et marque",
+    "settings": [
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" },
+      { "type": "url", "id": "instagram", "label": "Instagram" },
+      { "type": "image_picker", "id": "image_partage", "label": "Image de partage (réseaux sociaux)" }
+    ]
+  }
+]

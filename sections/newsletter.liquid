@@ -1,0 +1,27 @@
+<section class="section newsletter" aria-labelledby="newsletter-{{ section.id }}">
+  <div class="newsletter__image">
+    {% render 'visuel', image: section.settings.image, nom: 'Fond éditorial : filet et liège', ratio: '16/9', tailles: '100vw' %}
+  </div>
+  <div class="newsletter__texte">
+    <h2 id="newsletter-{{ section.id }}" class="section__titre">{{ section.settings.titre }}</h2>
+    {%- form 'customer', id: 'newsletter-accueil', class: 'formulaire-ligne' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <label class="visuellement-cache" for="newsletter-accueil-email">E-mail</label>
+      <input id="newsletter-accueil-email" type="email" name="contact[email]" autocomplete="email" placeholder="Votre e-mail" required>
+      <button type="submit">{{ section.settings.bouton }}</button>
+      {%- if form.posted_successfully? -%}<p class="formulaire__ok" role="status">C'est noté. On ne dira rien.</p>{%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Ceux qui savent sont prévenus en premier." },
+    { "type": "text", "id": "bouton", "label": "Bouton", "default": "Être prévenu" },
+    { "type": "image_picker", "id": "image", "label": "Image" }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

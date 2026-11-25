@@ -1,0 +1,123 @@
+{
+  "sections": {
+    "main": {
+      "type": "manuel",
+      "blocks": {
+        "m1": {
+          "type": "maxime",
+          "settings": {
+            "numero": "I",
+            "regle": "On ne demande pas à quelqu’un ce qu’il fait dans la vie.",
+            "chute": "Il ne le sait pas."
+          }
+        },
+        "m2": {
+          "type": "maxime",
+          "settings": {
+            "numero": "II",
+            "regle": "Jusqu’à quarante ans, on dit « je me cherche ».",
+            "chute": "Ensuite, on dit « consultant »."
+          }
+        },
+        "m3": {
+          "type": "maxime",
+          "settings": {
+            "numero": "III",
+            "regle": "Le lundi, on demande comment s’est passé le week-end.",
+            "chute": "On n’écoute pas. On était là."
+          }
+        },
+        "m4": {
+          "type": "maxime",
+          "settings": {
+            "numero": "IV",
+            "regle": "Un héritier ne parle jamais d’héritage.",
+            "chute": "Il parle de capitalisme."
+          }
+        },
+        "m5": {
+          "type": "maxime",
+          "settings": {
+            "numero": "V",
+            "regle": "On ne court pas après l’argent.",
+            "chute": "On sait où il dîne."
+          }
+        },
+        "m6": {
+          "type": "maxime",
+          "settings": {
+            "numero": "VI",
+            "regle": "La révolution se fait en semaine.",
+            "chute": "Le dimanche, on déjeune chez ses parents."
+          }
+        },
+        "m7": {
+          "type": "maxime",
+          "settings": {
+            "numero": "VII",
+            "regle": "On pense par soi-même.",
+            "chute": "Comme tous ses amis."
+          }
+        },
+        "m8": {
+          "type": "maxime",
+          "settings": {
+            "numero": "VIII",
+            "regle": "On ne dit pas « drogue ».",
+            "chute": "On dit « un peu »."
+          }
+        },
+        "m9": {
+          "type": "maxime",
+          "settings": {
+            "numero": "IX",
+            "regle": "Autrefois, on mentait sur sa dot.",
+            "chute": "Aujourd’hui, sur son body count."
+          }
+        },
+        "m10": {
+          "type": "maxime",
+          "settings": {
+            "numero": "X",
+            "regle": "On ne s’attache pas.",
+            "chute": "On vérifie la dernière connexion."
+          }
+        },
+        "m11": {
+          "type": "maxime",
+          "settings": {
+            "numero": "XI",
+            "regle": "On ne juge personne.",
+            "chute": "On attend d’être dans le taxi."
+          }
+        },
+        "m12": {
+          "type": "maxime",
+          "settings": {
+            "numero": "XII",
+            "regle": "À la fin du monde, on arrive en retard",
+            "chute": "et on apporte une bouteille."
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "m6",
+        "m7",
+        "m8",
+        "m9",
+        "m10",
+        "m11",
+        "m12"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,115 @@
+{%- comment -%}
+  Page boutique et vestiaire : bandeau photo, filtres (pièce, taille, couleur), tri,
+  grille 2 colonnes sur téléphone, 4 sur ordinateur, prix toujours visible.
+  Les filtres viennent de l'appli gratuite Search & Discovery de Shopify.
+{%- endcomment -%}
+{%- liquid
+  assign tag_vice = settings.vice_tag_produit | default: 'vice'
+  assign tri = collection.sort_by | default: collection.default_sort_by
+  assign image_jour = collection.image
+  assign image_nuit = collection.metafields.custom.image_nuit.value
+  assign accroche = collection.metafields.custom.accroche.value
+-%}
+<section class="rayon">
+  {%- if section.settings.bandeau -%}
+    <div class="rayon__bandeau">
+      <div class="seul-jour-image">{% render 'visuel', image: image_jour, nom: 'Bandeau du vestiaire, jour', ratio: '16/9', tailles: '100vw', prioritaire: true %}</div>
+      <div class="seule-nuit-image">{% render 'visuel', image: image_nuit, nom: 'Bandeau du vestiaire, nuit', ratio: '16/9', tailles: '100vw' %}</div>
+    </div>
+  {%- endif -%}
+  <div class="rayon__tete">
+    <h1 class="rayon__nom">{{ collection.title | escape }}</h1>
+    {%- if accroche != blank -%}
+      <p class="rayon__accroche">{{ accroche }}</p>
+    {%- elsif collection.description != blank -%}
+      <div class="rayon__accroche">{{ collection.description }}</div>
+    {%- endif -%}
+  </div>
+
+  {%- paginate collection.products by section.settings.par_page -%}
+    <form class="filtres" action="{{ collection.url }}" method="get" data-filtres>
+      {%- for filtre in collection.filters -%}
+        {%- if filtre.type == 'list' -%}
+          <details class="filtre">
+            <summary>{{ filtre.label | escape }}{% if filtre.active_values.size > 0 %} ({{ filtre.active_values.size }}){% endif %}</summary>
+            <ul class="filtre__valeurs" role="list">
+              {%- for v in filtre.values -%}
+                <li>
+                  <label{% if v.count == 0 and v.active == false %} class="filtre__vide"{% endif %}>
+                    <input type="checkbox" name="{{ v.param_name }}" value="{{ v.value }}"{% if v.active %} checked{% endif %}{% if v.count == 0 and v.active == false %} disabled{% endif %}>
+                    {{ v.label | escape }}
+                  </label>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </details>
+        {%- elsif filtre.type == 'price_range' -%}
+          <details class="filtre">
+            <summary>{{ filtre.label | escape }}</summary>
+            <div class="filtre__prix">
+              <label>De <input type="number" name="{{ filtre.min_value.param_name }}" value="{{ filtre.min_value.value | money_without_currency | replace: ',', '.' }}" min="0" placeholder="0"> €</label>
+              <label>à <input type="number" name="{{ filtre.max_value.param_name }}" value="{{ filtre.max_value.value | money_without_currency | replace: ',', '.' }}" min="0" placeholder="{{ filtre.range_max | money_without_currency }}"> €</label>
+            </div>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+
+      <label class="tri">
+        <span class="visuellement-cache">Trier</span>
+        <select name="sort_by" data-tri>
+          {%- for option in collection.sort_options -%}
+            {%- if option.value == 'created-descending' or option.value == 'price-ascending' or option.value == 'price-descending' or option.value == 'manual' or option.value == 'best-selling' -%}
+              <option value="{{ option.value }}"{% if option.value == tri %} selected{% endif %}>
+                {%- case option.value -%}
+                  {%- when 'created-descending' -%}Nouveautés
+                  {%- when 'price-ascending' -%}Prix croissant
+                  {%- when 'price-descending' -%}Prix décroissant
+                  {%- when 'manual' -%}Notre sélection
+                  {%- else -%}{{ option.name }}
+                {%- endcase -%}
+              </option>
+            {%- endif -%}
+          {%- endfor -%}
+        </select>
+      </label>
+      <noscript><button type="submit">Appliquer</button></noscript>
+
+      {%- assign actifs = 0 -%}
+      {%- for filtre in collection.filters -%}{%- assign actifs = actifs | plus: filtre.active_values.size -%}{%- endfor -%}
+      {%- if actifs > 0 -%}
+        <a class="filtres__effacer" href="{{ collection.url }}?sort_by={{ tri }}">Tout effacer</a>
+      {%- endif -%}
+    </form>
+
+    <ul class="grille" role="list">
+      {%- for p in collection.products -%}
+        {%- if p.tags contains tag_vice and collection.handle != 'le-vice' -%}{%- continue -%}{%- endif -%}
+        <li>{% render 'carte-produit', produit: p, prioritaire: forloop.first %}</li>
+      {%- else -%}
+        {%- if collection.filters.size > 0 and actifs > 0 -%}
+          <li class="grille__vide">Rien dans cette taille ni cette couleur. <a href="{{ collection.url }}">Tout voir</a></li>
+        {%- else -%}
+          {%- for i in (1..8) -%}<li>{% render 'carte-produit' %}</li>{%- endfor -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="pagination" aria-label="Pagination">
+        {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">Précédent</a>{%- endif -%}
+        <span>{{ paginate.current_page }} / {{ paginate.pages }}</span>
+        {%- if paginate.next -%}<a href="{{ paginate.next.url }}">Suivant</a>{%- endif -%}
+      </nav>
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
+
+{% schema %}
+{
+  "name": "Boutique et vestiaire",
+  "settings": [
+    { "type": "checkbox", "id": "bandeau", "label": "Bandeau photo du vestiaire", "default": true },
+    { "type": "range", "id": "par_page", "label": "Pièces par page", "min": 12, "max": 48, "step": 4, "default": 24 }
+  ]
+}
+{% endschema %}

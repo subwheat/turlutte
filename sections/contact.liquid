@@ -1,0 +1,20 @@
+<section class="page page--etroite contact">
+  <h1 class="page__titre">{{ page.title | default: 'Contact' }}</h1>
+  {%- if page.content != blank -%}<div class="rte">{{ page.content }}</div>{%- endif -%}
+  {%- form 'contact', class: 'formulaire' -%}
+    {%- if form.posted_successfully? -%}
+      <p class="formulaire__ok" role="status">Message reçu. Réponse sous 48 h ouvrées.</p>
+    {%- else -%}
+      <label for="c-nom">Nom</label><input id="c-nom" type="text" name="contact[name]" autocomplete="name">
+      <label for="c-email">E-mail</label><input id="c-email" type="email" name="contact[email]" autocomplete="email" required>
+      <label for="c-commande">Numéro de commande <span>(facultatif)</span></label><input id="c-commande" type="text" name="contact[commande]">
+      <label for="c-message">Message</label><textarea id="c-message" name="contact[body]" rows="6" required></textarea>
+      <button type="submit" class="bouton bouton--plein">Envoyer</button>
+      {%- if form.errors -%}<p class="formulaire__erreur" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+    {%- endif -%}
+  {%- endform -%}
+</section>
+
+{% schema %}
+{ "name": "Contact" }
+{% endschema %}

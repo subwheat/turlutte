@@ -1,0 +1,71 @@
+{%- comment -%}
+  Le Vice, sur invitation. Sans le tag client « vice-invite » : page sombre, photo au flash, l'accroche,
+  aucun produit, aucun prix, et le formulaire « Demander une invitation ».
+  Le formulaire crée un client Shopify tagué « vice-attente » (et le parrain en note).
+  Avec le tag : les pièces de la collection Le Vice.
+{%- endcomment -%}
+{%- capture acces -%}{% render 'vice-acces' %}{%- endcapture -%}
+{%- assign acces = acces | strip -%}
+<section class="vice" data-state-force="nuit">
+  {%- if acces == 'oui' -%}
+    <div class="vice__tete">
+      <p class="vice__surtitre">Le Vice</p>
+      <h1 class="vice__titre">{{ section.settings.titre_invite }}</h1>
+    </div>
+    {%- assign c = section.settings.collection -%}
+    <ul class="grille" role="list">
+      {%- if c != blank -%}
+        {%- for p in c.products -%}
+          <li>{% render 'carte-produit', produit: p %}</li>
+        {%- else -%}
+          <li class="grille__vide">Les pièces arrivent. Vous serez les premiers.</li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+  {%- else -%}
+    <div class="vice__porte">
+      <div class="vice__image">
+        {% render 'visuel', image: section.settings.image, nom: 'Le Vice : photo au flash, velours de banquette', ratio: '3/4', tailles: '(min-width: 990px) 50vw, 100vw', prioritaire: true %}
+      </div>
+      <div class="vice__texte">
+        <p class="vice__surtitre">Le Vice</p>
+        <h1 class="vice__titre">{{ section.settings.accroche }}</h1>
+        <p class="vice__chapo">{{ section.settings.chapo }}</p>
+
+        {%- form 'customer', id: 'vice-invitation', class: 'vice__formulaire' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="formulaire__ok" role="status">{{ section.settings.merci }}</p>
+          {%- else -%}
+            <input type="hidden" name="contact[tags]" value="vice-attente, newsletter">
+            <label for="vice-prenom">Prénom</label>
+            <input id="vice-prenom" type="text" name="contact[first_name]" autocomplete="given-name" required>
+            <label for="vice-email">E-mail</label>
+            <input id="vice-email" type="email" name="contact[email]" autocomplete="email" required>
+            <label for="vice-parrain">Qui vous envoie ? <span>(facultatif)</span></label>
+            <input id="vice-parrain" type="text" name="contact[note][Parrain]">
+            <button type="submit" class="bouton bouton--plein">Demander une invitation</button>
+            {%- if form.errors -%}<p class="formulaire__erreur" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+
+        <p class="vice__connexion">
+          Déjà invité ? <a href="{{ routes.account_login_url }}?return_url={{ request.path | url_encode }}">Se connecter</a>
+        </p>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Le Vice",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photo au flash" },
+    { "type": "text", "id": "accroche", "label": "Accroche", "default": "Vous n’êtes pas arrivé ici par hasard." },
+    { "type": "textarea", "id": "chapo", "label": "Texte", "default": "Le Vice n’est pas en vente libre. On y entre par invitation, et on attend son tour sur une liste." },
+    { "type": "text", "id": "merci", "label": "Message après envoi", "default": "Vous êtes sur la liste. On vous fera signe." },
+    { "type": "text", "id": "titre_invite", "label": "Titre pour les invités", "default": "Bienvenue. Fermez la porte." },
+    { "type": "collection", "id": "collection", "label": "Collection du Vice" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,9 @@
+{%- comment -%} Renvoie vrai si le client connecté porte le tag d'invitation du Vice. Usage : {% capture acces %}{% render 'vice-acces' %}{% endcapture %} {%- endcomment -%}
+{%- liquid
+  assign tag = settings.vice_tag_invite | default: 'vice-invite'
+  if customer and customer.tags contains tag
+    echo 'oui'
+  else
+    echo 'non'
+  endif
+-%}

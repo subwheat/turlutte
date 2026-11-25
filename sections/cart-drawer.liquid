@@ -1,0 +1,57 @@
+{%- comment -%} Tiroir panier : s'ouvre à l'ajout. Pièce, taille, prix, port estimé. Rendu aussi via l'API des sections. {%- endcomment -%}
+<div class="tiroir" data-tiroir hidden>
+  <div class="tiroir__voile" data-fermer-panier></div>
+  <div class="tiroir__panneau" role="dialog" aria-modal="true" aria-labelledby="tiroir-titre" tabindex="-1">
+    <div class="tiroir__tete">
+      <h2 id="tiroir-titre">Panier <span data-compteur>({{ cart.item_count }})</span></h2>
+      <button type="button" class="tiroir__fermer" data-fermer-panier aria-label="Fermer le panier">Fermer</button>
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      <ul class="lignes" role="list">
+        {%- for item in cart.items -%}
+          <li class="ligne">
+            <a class="ligne__image" href="{{ item.url }}">
+              {% render 'visuel', image: item.image, nom: 'Packshot', ratio: '4/5', tailles: '96px' %}
+            </a>
+            <div class="ligne__infos">
+              <a class="ligne__nom" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+              {%- unless item.product.has_only_default_variant -%}
+                <p class="ligne__variante">{{ item.variant.title | escape }}</p>
+              {%- endunless -%}
+              <div class="ligne__quantite">
+                <button type="button" data-changer="{{ item.key }}" data-quantite="{{ item.quantity | minus: 1 }}" aria-label="Retirer un exemplaire">−</button>
+                <span>{{ item.quantity }}</span>
+                <button type="button" data-changer="{{ item.key }}" data-quantite="{{ item.quantity | plus: 1 }}" aria-label="Ajouter un exemplaire"{% if settings.une_piece_par_commande %} disabled{% endif %}>+</button>
+              </div>
+            </div>
+            <p class="ligne__prix">{{ item.final_line_price | money }}</p>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <div class="tiroir__pied">
+        <p class="tiroir__total"><span>Total</span> <span>{{ cart.total_price | money }}</span></p>
+        <p class="tiroir__port">{{ settings.texte_port }}</p>
+        <p class="tiroir__port">{{ settings.texte_hors_ue }}</p>
+        <form action="{{ routes.cart_url }}" method="post">
+          <button type="submit" name="checkout" class="bouton bouton--plein">Payer</button>
+        </form>
+      </div>
+    {%- else -%}
+      <div class="tiroir__vide">
+        {% render 'visuel', image: section.settings.image_vide, nom: 'Fond éditorial : papier peint hameçons, jour', ratio: '4/5', tailles: '400px' %}
+        <p>Rien pour l’instant. On ne dira rien.</p>
+        <a class="bouton" href="{{ routes.all_products_collection_url }}">Voir les pièces</a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Tiroir panier",
+  "settings": [
+    { "type": "image_picker", "id": "image_vide", "label": "Image du panier vide" }
+  ]
+}
+{% endschema %}

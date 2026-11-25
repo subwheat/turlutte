@@ -1,0 +1,15 @@
+{
+  "current": {
+    "couleur_creme": "#F6F1E4",
+    "couleur_bleu": "#0E2239",
+    "couleur_phosphore": "#DDF56A",
+    "nuit_debut": 21,
+    "nuit_fin": 6,
+    "une_piece_par_commande": false,
+    "vice_tag_invite": "vice-invite",
+    "vice_tag_produit": "vice"
+  },
+  "presets": {
+    "Turlutte": {}
+  }
+}

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" data-state="jour" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0e2239">
+    <link rel="canonical" href="{{ canonical_url }}">
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
+    {%- endif -%}
+
+    {%- liquid
+      assign est_vice = false
+      if template.suffix == 'vice' or product.tags contains 'vice' or collection.handle == 'le-vice'
+        assign est_vice = true
+      endif
+    -%}
+    {%- if est_vice or template.name == 'password' or template.name == 'search' -%}
+      <meta name="robots" content="noindex, nofollow">
+    {%- endif -%}
+
+    <title>
+      {{- page_title -}}
+      {%- if current_page != 1 %} · page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} · {{ shop.name }}{% endunless -%}
+    </title>
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+    {% render 'meta-tags' %}
+
+    <link rel="preload" href="{{ 'caslon-display-400.woff2' | asset_url }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ 'caslon-text-400.woff2' | asset_url }}" as="font" type="font/woff2" crossorigin>
+    <style>
+      @font-face { font-family: 'Libre Caslon Display'; src: url('{{ 'caslon-display-400.woff2' | asset_url }}') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+      @font-face { font-family: 'Libre Caslon Text'; src: url('{{ 'caslon-text-400.woff2' | asset_url }}') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+      @font-face { font-family: 'Libre Caslon Text'; src: url('{{ 'caslon-text-400-italic.woff2' | asset_url }}') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+      @font-face { font-family: 'Libre Caslon Text'; src: url('{{ 'caslon-text-700.woff2' | asset_url }}') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+      :root {
+        --creme: {{ settings.couleur_creme }};
+        --bleu: {{ settings.couleur_bleu }};
+        --phosphore: {{ settings.couleur_phosphore }};
+      }
+    </style>
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+
+    <script>
+      (function () {
+        var racine = document.documentElement;
+        racine.classList.remove('no-js');
+        racine.classList.add('js');
+        var choix = null;
+        try { choix = localStorage.getItem('turlutte-etat'); } catch (e) {}
+        var heure = new Date().getHours();
+        var debut = {{ settings.nuit_debut | default: 21 }}, fin = {{ settings.nuit_fin | default: 6 }};
+        var nuit = heure >= debut || heure < fin;
+        racine.dataset.state = choix === 'jour' || choix === 'nuit' ? choix : (nuit ? 'nuit' : 'jour');
+      })();
+      window.turlutte = {
+        routes: {
+          cart_add_url: '{{ routes.cart_add_url }}',
+          cart_change_url: '{{ routes.cart_change_url }}',
+          cart_url: '{{ routes.cart_url }}',
+          root_url: '{{ routes.root_url }}'
+        },
+        unePieceParCommande: {{ settings.une_piece_par_commande | json }},
+        messageUnePiece: {{ settings.message_une_piece | json }}
+      };
+    </script>
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="gabarit-{{ template.name }}{% if template.suffix %} gabarit-{{ template.name }}--{{ template.suffix }}{% endif %}">
+    <a class="evitement" href="#contenu">Aller au contenu</a>
+    {% render 'fil' %}
+    {% sections 'header-group' %}
+
+    <main id="contenu" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+    {% section 'cart-drawer' %}
+  </body>
+</html>

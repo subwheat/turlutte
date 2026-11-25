@@ -1,0 +1,18 @@
+<section class="page{% if section.settings.etroite %} page--etroite{% endif %}">
+  {%- if section.settings.image != blank or section.settings.emplacement != blank -%}
+    <div class="page__image">{% render 'visuel', image: section.settings.image, nom: section.settings.emplacement, ratio: '16/9', tailles: '100vw' %}</div>
+  {%- endif -%}
+  <h1 class="page__titre">{{ page.title | escape }}</h1>
+  <div class="rte">{{ page.content }}</div>
+</section>
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": [
+    { "type": "checkbox", "id": "etroite", "label": "Colonne étroite", "default": true },
+    { "type": "image_picker", "id": "image", "label": "Image d'en-tête" },
+    { "type": "text", "id": "emplacement", "label": "Emplacement de visuel à venir (texte)" }
+  ]
+}
+{% endschema %}

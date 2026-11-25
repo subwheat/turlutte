@@ -1,0 +1,53 @@
+{
+  "sections": {
+    "ouverture": {
+      "type": "ouverture",
+      "settings": { "ratio": "3/4", "accroche_jour": "La tenue est irréprochable.", "accroche_nuit": "La réputation nous précède.", "bouton": "Voir les pièces" }
+    },
+    "pieces": {
+      "type": "pieces",
+      "settings": { "titre": "Les pièces", "collection": "all", "nombre": 8 }
+    },
+    "vestiaires": {
+      "type": "vestiaires",
+      "blocks": {
+        "base": { "type": "vestiaire", "settings": { "nom": "La Base", "accroche": "La tenue est irréprochable.", "collection": "la-base" } },
+        "insolence": { "type": "vestiaire", "settings": { "nom": "L’Insolence", "accroche": "La réputation nous précède.", "collection": "l-insolence" } },
+        "vertu": { "type": "vestiaire", "settings": { "nom": "La Vertu", "accroche": "Les valeurs sont solides. Le patrimoine aussi.", "collection": "la-vertu" } },
+        "vice": { "type": "vice", "settings": { "nom": "Le Vice", "accroche": "Vous n’êtes pas arrivé ici par hasard.", "lien": "/pages/le-vice" } }
+      },
+      "block_order": ["base", "insolence", "vertu", "vice"],
+      "settings": { "titre": "Les vestiaires" }
+    },
+    "fabrication": {
+      "type": "fabrication",
+      "blocks": {
+        "broderie": { "type": "detail", "settings": { "emplacement": "Gros plan : broderie de l'inscription", "nom": "La broderie", "texte": "Petite, serrée, à hauteur du cœur. Il faut s’approcher pour découvrir le problème." } },
+        "coton": { "type": "detail", "settings": { "emplacement": "Gros plan : grain du coton biologique", "nom": "Le coton", "texte": "Coton biologique épais, coupé pour durer plus longtemps que les histoires qu’on se raconte." } },
+        "griffe": { "type": "detail", "settings": { "emplacement": "Gros plan : griffe tissée hameçon", "nom": "La griffe", "texte": "Une griffe tissée, cousue à l’encolure. La maison reste respectable." } }
+      },
+      "block_order": ["broderie", "coton", "griffe"],
+      "settings": { "titre": "La fabrication" }
+    },
+    "maxime": {
+      "type": "maxime",
+      "settings": { "numero": "XI", "regle": "On ne juge personne.", "chute": "On attend d’être dans le taxi.", "lien": "/pages/le-manuel", "texte_lien": "Lire le Manuel" }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": { "titre": "Ceux qui savent sont prévenus en premier.", "bouton": "Être prévenu" }
+    },
+    "reassurance": {
+      "type": "reassurance",
+      "blocks": {
+        "livraison": { "type": "point", "settings": { "texte": "Livraison FR, BE, CH, CA" } },
+        "retours": { "type": "point", "settings": { "texte": "Retours 14 jours" } },
+        "paiement": { "type": "point", "settings": { "texte": "Paiement sécurisé" } },
+        "coton": { "type": "point", "settings": { "texte": "Coton biologique" } },
+        "commande": { "type": "point", "settings": { "texte": "Personnalisé à la commande" } }
+      },
+      "block_order": ["livraison", "retours", "paiement", "coton", "commande"]
+    }
+  },
+  "order": ["ouverture", "pieces", "vestiaires", "fabrication", "maxime", "newsletter", "reassurance"]
+}

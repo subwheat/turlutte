@@ -1,0 +1,61 @@
+{%- comment -%} Bloc 3 : trois grandes tuiles photo, et la tuile sombre du Vice qui s'allume la nuit. {%- endcomment -%}
+<section class="section vestiaires" aria-labelledby="vestiaires-{{ section.id }}">
+  <h2 id="vestiaires-{{ section.id }}" class="section__titre">{{ section.settings.titre }}</h2>
+  <ul class="vestiaires__grille" role="list">
+    {%- for bloc in section.blocks -%}
+      {%- assign c = bloc.settings.collection -%}
+      {%- assign nom_jour = bloc.settings.nom | append: ', campagne jour' -%}
+      {%- assign nom_nuit = bloc.settings.nom | append: ', campagne nuit' -%}
+      <li class="tuile{% if bloc.type == 'vice' %} tuile--vice{% endif %}" {{ bloc.shopify_attributes }}>
+        <a class="tuile__lien" href="{% if bloc.type == 'vice' %}{{ bloc.settings.lien | default: '/pages/le-vice' }}{% elsif c != blank %}{{ c.url }}{% else %}#{% endif %}">
+          <div class="seul-jour-image">
+            {% render 'visuel', image: bloc.settings.image_jour, nom: nom_jour, ratio: '3/4', tailles: '(min-width: 990px) 25vw, 100vw' %}
+          </div>
+          <div class="seule-nuit-image">
+            {% render 'visuel', image: bloc.settings.image_nuit, nom: nom_nuit, ratio: '3/4', tailles: '(min-width: 990px) 25vw, 100vw' %}
+          </div>
+          <span class="tuile__texte">
+            <span class="tuile__nom">{{ bloc.settings.nom }}</span>
+            <span class="tuile__accroche">{{ bloc.settings.accroche }}</span>
+            {%- if bloc.type == 'vice' -%}<span class="tuile__mention">Sur invitation</span>{%- endif -%}
+          </span>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Les vestiaires",
+  "settings": [
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Les vestiaires" }
+  ],
+  "blocks": [
+    {
+      "type": "vestiaire",
+      "name": "Vestiaire",
+      "settings": [
+        { "type": "text", "id": "nom", "label": "Nom", "default": "La Base" },
+        { "type": "text", "id": "accroche", "label": "Accroche", "default": "La tenue est irréprochable." },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image_jour", "label": "Photo, jour" },
+        { "type": "image_picker", "id": "image_nuit", "label": "Photo, nuit" }
+      ]
+    },
+    {
+      "type": "vice",
+      "name": "Le Vice",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "nom", "label": "Nom", "default": "Le Vice" },
+        { "type": "text", "id": "accroche", "label": "Accroche", "default": "Vous n’êtes pas arrivé ici par hasard." },
+        { "type": "url", "id": "lien", "label": "Page d'invitation" },
+        { "type": "image_picker", "id": "image_jour", "label": "Photo, jour (zinc au petit matin)" },
+        { "type": "image_picker", "id": "image_nuit", "label": "Photo, nuit (velours, flash)" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Les vestiaires" }]
+}
+{% endschema %}

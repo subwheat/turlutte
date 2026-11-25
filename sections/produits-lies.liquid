@@ -1,0 +1,31 @@
+{%- comment -%} « Du même vestiaire » (recommandations Shopify) ; les pièces du Vice n'apparaissent jamais hors du Vice. {%- endcomment -%}
+{%- liquid
+  assign tag_vice = settings.vice_tag_produit | default: 'vice'
+  assign fiche_vice = false
+  if product.tags contains tag_vice
+    assign fiche_vice = true
+  endif
+-%}
+<section class="section lies" data-recommandations data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=8&intent=related">
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <h2 class="section__titre">{{ section.settings.titre }}</h2>
+    <ul class="grille" role="list">
+      {%- assign n = 0 -%}
+      {%- for p in recommendations.products -%}
+        {%- if p.tags contains tag_vice and fiche_vice == false -%}{%- continue -%}{%- endif -%}
+        {%- if n >= 4 -%}{%- break -%}{%- endif -%}
+        <li>{% render 'carte-produit', produit: p %}</li>
+        {%- assign n = n | plus: 1 -%}
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Du même vestiaire",
+  "settings": [
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Du même vestiaire" }
+  ]
+}
+{% endschema %}

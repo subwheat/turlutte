@@ -1,0 +1,17 @@
+<section class="page page--etroite introuvable">
+  {% render 'visuel', image: section.settings.image, nom: 'Fond éditorial : papier peint hameçons, jour', ratio: '16/9', tailles: '100vw' %}
+  <h1 class="page__titre">{{ section.settings.titre }}</h1>
+  <p class="page__chapo">{{ section.settings.texte }}</p>
+  <a class="bouton" href="{{ routes.all_products_collection_url }}">Voir les pièces</a>
+</section>
+
+{% schema %}
+{
+  "name": "Page introuvable",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "On ne trouve pas." },
+    { "type": "text", "id": "texte", "label": "Texte", "default": "La page a filé. Elle n’a rien dit en partant." }
+  ]
+}
+{% endschema %}

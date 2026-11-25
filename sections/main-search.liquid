@@ -1,0 +1,30 @@
+{%- assign tag_vice = settings.vice_tag_produit | default: 'vice' -%}
+<section class="page recherche">
+  <h1 class="page__titre">Recherche</h1>
+  <form action="{{ routes.search_url }}" method="get" role="search" class="formulaire-ligne">
+    <input type="hidden" name="type" value="product">
+    <label class="visuellement-cache" for="recherche-q">Rechercher</label>
+    <input id="recherche-q" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Une accroche, une pièce…">
+    <button type="submit">Chercher</button>
+  </form>
+  {%- if search.performed -%}
+    {%- paginate search.results by 24 -%}
+      <ul class="grille" role="list">
+        {%- for r in search.results -%}
+          {%- if r.object_type == 'product' -%}
+            {%- if r.tags contains tag_vice -%}{%- continue -%}{%- endif -%}
+            <li>{% render 'carte-produit', produit: r %}</li>
+          {%- else -%}
+            <li><a href="{{ r.url }}">{{ r.title | escape }}</a></li>
+          {%- endif -%}
+        {%- else -%}
+          <li class="grille__vide">Rien sous ce nom. Essayez autrement.</li>
+        {%- endfor -%}
+      </ul>
+    {%- endpaginate -%}
+  {%- endif -%}
+</section>
+
+{% schema %}
+{ "name": "Recherche" }
+{% endschema %}
