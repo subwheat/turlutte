@@ -447,3 +447,4 @@ html.no-js .seule-nuit-image { display: none; }
   .accueil__diapo--nuit .accueil__image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, transparent 55%, var(--bleu)); pointer-events: none; }
   .accueil__diapo--nuit .accueil__image img { object-position: 50% 50%; }
 }
+.accueil__bouton span { margin-left: 0.4em; }
