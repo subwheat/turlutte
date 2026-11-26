@@ -14,6 +14,7 @@ Dernière révision : 2026-11-26.
 ## Dépôt
 - La racine du dépôt est la racine du thème : `assets/ config/ layout/ locales/ sections/ snippets/ templates/` (et `blocks/` / `snippets/` s'ils existent). Shopify ne connecte que les branches qui ont cette structure ; ne rien ajouter de lourd à la racine (pas d'images de packshots, pas de dossier de marque).
 - Vérifier le nom de la branche par défaut (`main` ou autre) avant toute opération. Dans la suite, « main » désigne cette branche par défaut.
+- Dans ce dépôt : la branche par défaut GitHub est `prototype/jour-nuit` (maquette Astro, pas un thème). Le thème vit sur `shopify-theme`, la branche connectée à Shopify et publiée : un merge dessus met le site à jour. `shopify-theme` est protégée comme `main` : pas de push direct, une PR, Julien merge.
 - `main` = ce qui est publié. `staging` (à créer si elle n'existe pas encore, dans un second temps, pas dans cette PR d'organisation) = thème non publié connecté à Shopify pour tester. Julien seul fusionne dans `main`.
 - Shopify commite lui-même les modifications faites dans l'éditeur du thème sur la branche connectée. Ne pas utiliser l'éditeur Shopify sur `main` sans prévenir ; sinon, `git pull` avant de travailler.
 
