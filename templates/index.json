@@ -7,7 +7,8 @@
         "accroche_jour": "La tenue est irréprochable.",
         "accroche_nuit": "La réputation nous précède.",
         "bouton": "Voir les pièces"
-      }
+      },
+      "disabled": true
     },
     "pieces": {
       "type": "pieces",
@@ -253,6 +254,7 @@
   },
   "order": [
     "accueil",
+    "ouverture",
     "pieces",
     "vestiaires",
     "fabrication",
