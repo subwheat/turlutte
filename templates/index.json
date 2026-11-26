@@ -157,10 +157,46 @@
         "coton",
         "commande"
       ]
+    },
+    "reveillon": {
+      "type": "carrousel",
+      "settings": {
+        "titre": "Le Réveillon",
+        "intro": "Un dîner, deux actes. Les tenues de la soirée du 24."
+      },
+      "blocks": {
+        "acte1": {
+          "type": "diapo",
+          "settings": {
+            "fichier": "reveillon-pulls-de-noel.jpg",
+            "alt": "T-shirt noir brodé « Vous avez l’air cons avec vos pulls de Noël. »",
+            "surtitre": "Acte I · 20 h",
+            "titre": "Les pulls de Noël arrivent.",
+            "texte": "<p>Rennes en jacquard, clochettes, pompons. Il en faut un pour le dire, avec la politesse de la maison.</p>",
+            "texte_lien": "Voir la pièce"
+          }
+        },
+        "acte2": {
+          "type": "diapo",
+          "settings": {
+            "fichier": "reveillon-tonton.jpg",
+            "alt": "T-shirt écru, étiquette cadeau « Tonton raciste, joyeux Noël »",
+            "surtitre": "Acte II · 23 h",
+            "titre": "Il y en a un à chaque table.",
+            "texte": "<p>Celui qui attend le fromage pour parler d’immigration. Cette année, personne ne le contredit : on lui offre son étiquette.</p>",
+            "texte_lien": "Voir la pièce"
+          }
+        }
+      },
+      "block_order": [
+        "acte1",
+        "acte2"
+      ]
     }
   },
   "order": [
     "ouverture",
+    "reveillon",
     "pieces",
     "vestiaires",
     "fabrication",

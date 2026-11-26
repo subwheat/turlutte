@@ -335,3 +335,27 @@ html.no-js .seule-nuit-image { display: none; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+/* ---------- Carrousel éditorial ---------- */
+.carrousel__tete { display: flex; justify-content: space-between; align-items: end; gap: 1rem; margin-bottom: 1.5rem; }
+.carrousel__tete .section__titre { margin-bottom: 0.25rem; }
+.carrousel__intro { margin: 0; font-style: italic; }
+.carrousel__fleches { display: none; gap: 0.5rem; }
+@media (min-width: 750px) { .carrousel__fleches { display: flex; } }
+.carrousel__fleche { width: 3rem; height: 3rem; border: 1px solid var(--encre); background: transparent; cursor: pointer; font-size: 1.25rem; }
+.carrousel__fleche:hover:not(:disabled) { background: var(--encre); color: var(--fond); }
+.carrousel__fleche:disabled { opacity: 0.3; cursor: default; }
+.carrousel__piste { display: grid; grid-auto-flow: column; grid-auto-columns: 85%; gap: 1rem; margin: 0 calc(-1 * var(--marge)); padding: 0 var(--marge); list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--marge); scrollbar-width: none; overscroll-behavior-x: contain; }
+.carrousel__piste::-webkit-scrollbar { display: none; }
+@media (min-width: 990px) { .carrousel__piste { grid-auto-columns: calc((100% - 2 * var(--marge) - 1.5rem) / 2.4); gap: 1.5rem; } }
+.carrousel__diapo { scroll-snap-align: start; display: grid; gap: 1rem; align-content: start; }
+.carrousel__cadre { margin: 0; aspect-ratio: 4/5; overflow: hidden; background: #fff; }
+.carrousel__cadre img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+@media (hover: hover) { .carrousel__diapo:hover .carrousel__cadre img { transform: scale(1.03); } }
+[data-state='nuit'] .carrousel__cadre { box-shadow: 0 0 0 1px var(--voile); }
+.carrousel__acte { margin: 0; font-size: 0.8125rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--signal); }
+.carrousel__titre { margin: 0.25rem 0 0.5rem; font-family: var(--display); font-weight: 400; font-size: clamp(1.5rem, 4vw, 2.25rem); line-height: 1.05; text-wrap: balance; }
+.carrousel__texte p { margin: 0 0 0.75rem; max-width: 42ch; }
+.carrousel__points { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; }
+.carrousel__point { width: 0.5rem; height: 0.5rem; border: 1px solid var(--encre); border-radius: 50%; transition: background 200ms; }
+.carrousel__point--actif { background: var(--encre); }

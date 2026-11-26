@@ -1,0 +1,68 @@
+{%- comment -%}
+  Carrousel éditorial : une histoire en diapos (ex. « Le Réveillon, en deux actes »).
+  Chaque pièce y est montrée dans son récit, jamais seule : surtitre (l'acte), titre, texte.
+  Image : choisie dans Shopify (image) ou, à défaut, fichier du thème (fichier).
+{%- endcomment -%}
+<section class="section carrousel" aria-roledescription="carrousel" aria-labelledby="carrousel-{{ section.id }}" data-carrousel>
+  <div class="carrousel__tete">
+    <div>
+      <h2 id="carrousel-{{ section.id }}" class="section__titre">{{ section.settings.titre }}</h2>
+      {%- if section.settings.intro != blank -%}<p class="carrousel__intro">{{ section.settings.intro }}</p>{%- endif -%}
+    </div>
+    <div class="carrousel__fleches">
+      <button type="button" class="carrousel__fleche" data-precedent aria-label="Diapo précédente">←</button>
+      <button type="button" class="carrousel__fleche" data-suivant aria-label="Diapo suivante">→</button>
+    </div>
+  </div>
+  <ol class="carrousel__piste" data-piste tabindex="0">
+    {%- for block in section.blocks -%}
+      <li class="carrousel__diapo" {{ block.shopify_attributes }} aria-roledescription="diapo" aria-label="{{ forloop.index }} sur {{ forloop.length }}">
+        <figure class="carrousel__cadre">
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 1600 | image_tag: widths: '400, 800, 1200, 1600', sizes: '(min-width: 990px) 40vw, 85vw', loading: 'lazy', alt: block.settings.titre | escape }}
+          {%- elsif block.settings.fichier != blank -%}
+            <img src="{{ block.settings.fichier | asset_url }}" alt="{{ block.settings.alt | default: block.settings.titre | escape }}" width="1600" height="2000" loading="lazy">
+          {%- else -%}
+            {% render 'visuel', nom: block.settings.titre, ratio: '4/5' %}
+          {%- endif -%}
+        </figure>
+        <div class="carrousel__legende">
+          {%- if block.settings.surtitre != blank -%}<p class="carrousel__acte">{{ block.settings.surtitre }}</p>{%- endif -%}
+          <h3 class="carrousel__titre">{{ block.settings.titre }}</h3>
+          {%- if block.settings.texte != blank -%}<div class="carrousel__texte">{{ block.settings.texte }}</div>{%- endif -%}
+          {%- if block.settings.lien != blank -%}<a class="lien-fleche" href="{{ block.settings.lien }}">{{ block.settings.texte_lien | default: 'Voir la pièce' }}</a>{%- endif -%}
+        </div>
+      </li>
+    {%- endfor -%}
+  </ol>
+  <div class="carrousel__points" data-points aria-hidden="true">
+    {%- for block in section.blocks -%}<span class="carrousel__point{% if forloop.first %} carrousel__point--actif{% endif %}"></span>{%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Carrousel",
+  "settings": [
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Le Réveillon" },
+    { "type": "text", "id": "intro", "label": "Introduction", "default": "Un dîner, deux actes." }
+  ],
+  "blocks": [
+    {
+      "type": "diapo",
+      "name": "Diapo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Visuel" },
+        { "type": "text", "id": "fichier", "label": "Ou fichier du thème (essai)", "info": "Nom d'un fichier dans assets, ex. reveillon-pulls-de-noel.jpg" },
+        { "type": "text", "id": "alt", "label": "Texte alternatif" },
+        { "type": "text", "id": "surtitre", "label": "Surtitre (l'acte)" },
+        { "type": "text", "id": "titre", "label": "Titre", "default": "Titre de la diapo" },
+        { "type": "richtext", "id": "texte", "label": "Récit" },
+        { "type": "url", "id": "lien", "label": "Lien" },
+        { "type": "text", "id": "texte_lien", "label": "Texte du lien", "default": "Voir la pièce" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Carrousel" }]
+}
+{% endschema %}

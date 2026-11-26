@@ -198,3 +198,31 @@
     } catch (e) { /* rien */ }
   });
 })();
+
+/* Carrousel éditorial : défilement natif (scroll-snap), flèches et points. */
+(function () {
+  document.querySelectorAll('[data-carrousel]').forEach(function (racine) {
+    var piste = racine.querySelector('[data-piste]');
+    var diapos = Array.prototype.slice.call(piste.children);
+    var points = racine.querySelectorAll('.carrousel__point');
+    var prec = racine.querySelector('[data-precedent]');
+    var suiv = racine.querySelector('[data-suivant]');
+    function pas() { return diapos.length > 1 ? diapos[1].offsetLeft - diapos[0].offsetLeft : piste.clientWidth; }
+    function courant() { return Math.round(piste.scrollLeft / pas()); }
+    function maj() {
+      var i = courant();
+      points.forEach(function (p, n) { p.classList.toggle('carrousel__point--actif', n === i); });
+      if (prec) prec.disabled = piste.scrollLeft <= 2;
+      if (suiv) suiv.disabled = piste.scrollLeft + piste.clientWidth >= piste.scrollWidth - 2;
+    }
+    if (prec) prec.addEventListener('click', function () { piste.scrollBy({ left: -pas(), behavior: 'smooth' }); });
+    if (suiv) suiv.addEventListener('click', function () { piste.scrollBy({ left: pas(), behavior: 'smooth' }); });
+    piste.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); piste.scrollBy({ left: pas(), behavior: 'smooth' }); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); piste.scrollBy({ left: -pas(), behavior: 'smooth' }); }
+    });
+    piste.addEventListener('scroll', function () { window.requestAnimationFrame(maj); }, { passive: true });
+    window.addEventListener('resize', maj);
+    maj();
+  });
+})();
