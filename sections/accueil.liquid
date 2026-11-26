@@ -1,0 +1,107 @@
+{%- comment -%}
+  Carrousel d'accueil : une diapo à la fois, plein écran.
+  1 · la trend (événementielle), 2 · la Base, 3 · la Vertu, 4 · le Vice (nuit, liste d'attente).
+  Image : choisie dans Shopify (image) ou, à défaut, fichier du thème (fichier).
+{%- endcomment -%}
+<section class="accueil" aria-roledescription="carrousel" aria-label="{{ section.settings.nom | escape }}" data-accueil>
+  <ol class="accueil__piste" data-piste tabindex="0">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign b = block.settings
+        assign nuit = false
+        if b.ambiance == 'nuit'
+          assign nuit = true
+        endif
+      -%}
+      <li class="accueil__diapo accueil__diapo--image-{{ b.cote }}{% if nuit %} accueil__diapo--nuit{% endif %}" id="accueil-{{ block.id }}" {{ block.shopify_attributes }} aria-roledescription="diapo" aria-label="{{ forloop.index }} sur {{ forloop.length }} : {{ b.onglet | escape }}"{% if nuit %} data-nuit{% endif %}>
+        <figure class="accueil__image">
+          {%- if b.image != blank -%}
+            {%- if forloop.first -%}
+              {{ b.image | image_url: width: 1800 | image_tag: widths: '600, 900, 1200, 1800', sizes: '(min-width: 990px) 58vw, 100vw', loading: 'eager', fetchpriority: 'high', alt: b.alt | escape }}
+            {%- else -%}
+              {{ b.image | image_url: width: 1800 | image_tag: widths: '600, 900, 1200, 1800', sizes: '(min-width: 990px) 58vw, 100vw', loading: 'lazy', alt: b.alt | escape }}
+            {%- endif -%}
+          {%- elsif b.fichier != blank -%}
+            <img src="{{ b.fichier | asset_url }}" alt="{{ b.alt | escape }}" width="{% if b.format == 'paysage' %}1152{% else %}864{% endif %}" height="{% if b.format == 'paysage' %}864{% else %}1152{% endif %}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+          {%- else -%}
+            {% render 'visuel', nom: b.onglet, ratio: '4/5' %}
+          {%- endif -%}
+          {%- if b.etiquette != blank -%}<figcaption class="accueil__etiquette">{{ b.etiquette }}</figcaption>{%- endif -%}
+        </figure>
+        <div class="accueil__texte">
+          <p class="accueil__surtitre"><span>{{ b.famille }}</span>{% if b.vestiaire != blank %} <span class="accueil__vestiaire">· {{ b.vestiaire }}</span>{% endif %}</p>
+          <h2 class="accueil__titre">{{ b.titre }}{% if b.chute != blank %} <em>{{ b.chute }}</em>{% endif %}</h2>
+          {%- if b.texte != blank -%}<p class="accueil__chapo">{{ b.texte }}</p>{%- endif -%}
+          {%- if b.liste_attente -%}
+            {%- assign id_liste = 'liste-' | append: block.id -%}
+            {%- form 'customer', id: id_liste, class: 'accueil__liste' -%}
+              <input type="hidden" name="contact[tags]" value="liste-vice">
+              <label class="visuellement-cache" for="liste-{{ block.id }}-email">E-mail</label>
+              <input id="liste-{{ block.id }}-email" type="email" name="contact[email]" autocomplete="email" placeholder="votre@adresse.fr" required>
+              <button type="submit">{{ b.bouton | default: 'Rejoindre la liste' }}</button>
+              {%- if form.posted_successfully? -%}<p class="formulaire__ok" role="status">C’est noté. On vous fera signe.</p>{%- endif -%}
+            {%- endform -%}
+          {%- else -%}
+            <div class="accueil__actions">
+              {%- if b.lien != blank -%}<a class="bouton bouton--plein accueil__bouton" href="{{ b.lien }}">{{ b.bouton }} <span aria-hidden="true">→</span></a>{%- endif -%}
+              {%- if b.lien_2 != blank -%}<a class="accueil__lien" href="{{ b.lien_2 }}">{{ b.texte_lien_2 }}</a>{%- endif -%}
+            </div>
+          {%- endif -%}
+          {%- if b.note != blank -%}<p class="accueil__note">{{ b.note }}</p>{%- endif -%}
+        </div>
+      </li>
+    {%- endfor -%}
+  </ol>
+  <div class="accueil__pied">
+    <div class="accueil__onglets" role="tablist" aria-label="Diapos">
+      {%- for block in section.blocks -%}
+        <button type="button" class="accueil__onglet" role="tab" aria-controls="accueil-{{ block.id }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-onglet="{{ forloop.index0 }}">
+          <span class="accueil__numero">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <span class="accueil__nom">{{ block.settings.onglet }}</span>
+        </button>
+      {%- endfor -%}
+    </div>
+    <div class="accueil__fleches">
+      <button type="button" class="accueil__fleche" data-precedent aria-label="Diapo précédente">‹</button>
+      <button type="button" class="accueil__fleche" data-suivant aria-label="Diapo suivante">›</button>
+    </div>
+  </div>
+  <div class="accueil__rayures" aria-hidden="true"></div>
+</section>
+
+{% schema %}
+{
+  "name": "Carrousel d'accueil",
+  "settings": [
+    { "type": "text", "id": "nom", "label": "Nom (lecteurs d'écran)", "default": "À la une" }
+  ],
+  "blocks": [
+    {
+      "type": "diapo",
+      "name": "Diapo",
+      "settings": [
+        { "type": "text", "id": "onglet", "label": "Onglet", "default": "La Base" },
+        { "type": "image_picker", "id": "image", "label": "Visuel" },
+        { "type": "text", "id": "fichier", "label": "Ou fichier du thème", "info": "Nom d'un fichier dans assets, ex. carrousel-1-trend.jpg" },
+        { "type": "select", "id": "format", "label": "Format du fichier", "default": "paysage", "options": [ { "value": "paysage", "label": "Paysage 4:3" }, { "value": "portrait", "label": "Portrait 3:4" } ] },
+        { "type": "text", "id": "alt", "label": "Texte alternatif" },
+        { "type": "select", "id": "cote", "label": "Image", "default": "droite", "options": [ { "value": "droite", "label": "À droite" }, { "value": "gauche", "label": "À gauche" } ] },
+        { "type": "select", "id": "ambiance", "label": "Ambiance", "default": "jour", "options": [ { "value": "jour", "label": "Suit le mode jour/nuit" }, { "value": "nuit", "label": "Toujours nuit (Le Vice)" } ] },
+        { "type": "text", "id": "etiquette", "label": "Étiquette sur l'image" },
+        { "type": "text", "id": "famille", "label": "Surtitre", "default": "Good manners" },
+        { "type": "text", "id": "vestiaire", "label": "Vestiaire (après le surtitre)" },
+        { "type": "text", "id": "titre", "label": "Titre", "default": "Nos basiques," },
+        { "type": "text", "id": "chute", "label": "Fin du titre, en italique" },
+        { "type": "text", "id": "texte", "label": "Chapô" },
+        { "type": "text", "id": "bouton", "label": "Bouton", "default": "Voir" },
+        { "type": "url", "id": "lien", "label": "Lien du bouton" },
+        { "type": "text", "id": "texte_lien_2", "label": "Second lien : texte" },
+        { "type": "url", "id": "lien_2", "label": "Second lien" },
+        { "type": "checkbox", "id": "liste_attente", "label": "Remplacer le bouton par la liste d'attente (e-mail)", "default": false },
+        { "type": "text", "id": "note", "label": "Note en petit" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Carrousel d'accueil" }]
+}
+{% endschema %}

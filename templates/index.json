@@ -158,73 +158,101 @@
         "commande"
       ]
     },
-    "reveillon": {
-      "type": "carrousel",
-      "settings": {
-        "titre": "Le Réveillon",
-        "intro": "Une soirée du 24, dans l’ordre où elle se passe."
-      },
+    "accueil": {
+      "type": "accueil",
       "blocks": {
-        "acte1": {
+        "trend": {
           "type": "diapo",
           "settings": {
-            "fichier": "reveillon-pulls-de-noel.jpg",
-            "alt": "T-shirt noir brodé « Vous avez l’air cons avec vos pulls de Noël. »",
-            "surtitre": "20 h · L’apéritif",
-            "titre": "Les pulls de Noël arrivent.",
-            "texte": "<p>Rennes en jacquard, clochettes, pompons. Il en faut un pour le dire, avec la politesse de la maison.</p>",
-            "texte_lien": "Voir la pièce",
-            "format": "portrait"
-          }
-        },
-        "acte2": {
-          "type": "diapo",
-          "settings": {
-            "fichier": "reveillon-tonton.jpg",
-            "alt": "T-shirt écru, étiquette cadeau « Tonton raciste, joyeux Noël »",
-            "surtitre": "23 h · Le fromage",
-            "titre": "Il y en a un à chaque table.",
-            "texte": "<p>Celui qui attend le fromage pour parler d’immigration. Cette année, personne ne le contredit : on lui offre son étiquette.</p>",
-            "texte_lien": "Voir la pièce",
-            "format": "portrait"
-          }
-        },
-        "pose01": {
-          "type": "diapo",
-          "settings": {
+            "onglet": "La trend",
+            "fichier": "carrousel-1-trend.jpg",
             "format": "paysage",
-            "fichier": "reveillon-pose-01.jpg",
-            "alt": "Le Notaire et La Divorcée se font la bise à l’arrivée, photo au flash",
-            "surtitre": "19 h 40 · L’arrivée",
-            "titre": "On se fait la bise.",
-            "texte": "<p>Le Notaire reçoit. La Divorcée garde son manteau. Ils ont l’air ravis de se revoir.</p>",
-            "texte_lien": ""
+            "alt": "Au réveillon, une femme en tee « Pervers narcissique » tend un cadeau emballé de bleu.",
+            "cote": "droite",
+            "etiquette": "Le Réveillon",
+            "famille": "La trend",
+            "vestiaire": "Réveillon",
+            "titre": "Fais un cadeau à ton",
+            "chute": "ex.",
+            "texte": "Le tee de rupture : poliment emballé, sincèrement offert.",
+            "bouton": "Offrir à mon ex",
+            "lien": "shopify://pages/le-reveillon",
+            "texte_lien_2": "Voir le Réveillon",
+            "lien_2": "shopify://pages/le-reveillon"
           }
         },
-        "pose02": {
+        "base": {
           "type": "diapo",
           "settings": {
+            "onglet": "La Base",
+            "fichier": "carrousel-2-base.jpg",
             "format": "paysage",
-            "fichier": "reveillon-pose-02.jpg",
-            "alt": "L’Héritier présente sa fiancée à son père, qui lui serre la main un peu trop longtemps",
-            "surtitre": "19 h 42 · Les présentations",
-            "titre": "Je plais à ton père.",
-            "texte": "<p>L’Héritier présente sa fiancée. Tonton lui tient la main une seconde de trop. Sur la manche, brodée, la seule phrase vraie de la soirée.</p>",
-            "texte_lien": ""
+            "alt": "Le polo crème plié, un hameçon brodé sur la poitrine.",
+            "cote": "droite",
+            "etiquette": "Le polo crème",
+            "famille": "Good manners",
+            "vestiaire": "La Base",
+            "titre": "Nos basiques, si tu n’as rien à",
+            "chute": "prouver.",
+            "texte": "Polo, tee, pull. Un hameçon brodé, et rien d’autre.",
+            "bouton": "Voir la Base",
+            "lien": "shopify://collections/la-base",
+            "note": "Broderie satinée · hameçon seul, sans autre signe"
+          }
+        },
+        "vertu": {
+          "type": "diapo",
+          "settings": {
+            "onglet": "La Vertu",
+            "fichier": "carrousel-3-vertu.jpg",
+            "format": "portrait",
+            "alt": "Un homme en sweat beige brodé « Héritier de mes efforts », devant une bibliothèque.",
+            "cote": "gauche",
+            "etiquette": "Héritier de mes efforts",
+            "famille": "Good manners",
+            "vestiaire": "La Vertu",
+            "titre": "Parce que tu es quelqu’un de bien,",
+            "chute": "hein ?",
+            "texte": "Bonnes manières, avec un sous-entendu.",
+            "bouton": "Voir la Vertu",
+            "lien": "shopify://collections/la-vertu",
+            "note": "Le sweat « Héritier de mes efforts » · broderie ton sur ton"
+          }
+        },
+        "vice": {
+          "type": "diapo",
+          "settings": {
+            "onglet": "Le Vice",
+            "fichier": "carrousel-4-vice.jpg",
+            "format": "portrait",
+            "alt": "Une pièce sombre derrière un rideau entrouvert, un trait de lumière phosphorescente.",
+            "cote": "gauche",
+            "ambiance": "nuit",
+            "etiquette": "Pièce n°01 · sur invitation",
+            "famille": "Bad habits",
+            "vestiaire": "Le Vice",
+            "titre": "Vous n’êtes pas arrivé ici",
+            "chute": "par hasard.",
+            "texte": "Une seule pièce, sur invitation. Waiting list only.",
+            "bouton": "Rejoindre la liste",
+            "liste_attente": true,
+            "note": "Pièce n°01 · nom, photo et prix réservés aux inscrits"
           }
         }
       },
       "block_order": [
-        "pose01",
-        "pose02",
-        "acte1",
-        "acte2"
-      ]
+        "trend",
+        "base",
+        "vertu",
+        "vice"
+      ],
+      "settings": {
+        "nom": "À la une"
+      }
     }
   },
   "order": [
-    "reveillon",
-    "ouverture",
+    "accueil",
     "pieces",
     "vestiaires",
     "fabrication",

@@ -238,3 +238,34 @@
     maj();
   });
 })();
+
+/* Carrousel d'accueil : une diapo à la fois, onglets numérotés, la diapo Vice passe la section en nuit. */
+(function () {
+  document.querySelectorAll('[data-accueil]').forEach(function (racine) {
+    var piste = racine.querySelector('[data-piste]');
+    var diapos = Array.prototype.slice.call(piste.children);
+    var onglets = racine.querySelectorAll('[data-onglet]');
+    var prec = racine.querySelector('[data-precedent]');
+    var suiv = racine.querySelector('[data-suivant]');
+    function courant() { return Math.round(piste.scrollLeft / (piste.clientWidth || 1)); }
+    function aller(n) {
+      n = (n + diapos.length) % diapos.length;
+      piste.scrollTo({ left: diapos[n].offsetLeft, behavior: 'smooth' });
+    }
+    function maj() {
+      var i = Math.max(0, Math.min(diapos.length - 1, courant()));
+      onglets.forEach(function (o, n) { o.setAttribute('aria-selected', n === i ? 'true' : 'false'); });
+      racine.classList.toggle('accueil--nuit', diapos[i] && diapos[i].hasAttribute('data-nuit'));
+    }
+    onglets.forEach(function (o) { o.addEventListener('click', function () { aller(parseInt(o.getAttribute('data-onglet'), 10)); }); });
+    if (prec) prec.addEventListener('click', function () { aller(courant() - 1); });
+    if (suiv) suiv.addEventListener('click', function () { aller(courant() + 1); });
+    piste.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); aller(courant() + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); aller(courant() - 1); }
+    });
+    piste.addEventListener('scroll', function () { window.requestAnimationFrame(maj); }, { passive: true });
+    window.addEventListener('resize', maj);
+    maj();
+  });
+})();
