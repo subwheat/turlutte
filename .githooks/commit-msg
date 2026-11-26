@@ -1,0 +1,22 @@
+#!/bin/bash
+# commit-msg — vérifie Conventional Commits + trailer Agent.
+# Activation : git config core.hooksPath .githooks
+MSG_FILE="$1"
+FIRST=$(head -n1 "$MSG_FILE")
+RE='^(feat|fix|docs|content|style|refactor|chore|revert)(\([a-z0-9-]+\))?!?: .{1,72}$'
+
+# Laisser passer les messages automatiques de git (fusions, annulations)
+case "$FIRST" in
+  Merge\ *|Revert\ *|fixup!*|squash!*) exit 0 ;;
+esac
+
+if ! echo "$FIRST" | grep -Eq "$RE"; then
+  echo "Message refusé. Format : type(scope): description  (types : feat fix docs content style refactor chore revert)" >&2
+  echo "Reçu : $FIRST" >&2
+  exit 1
+fi
+if ! grep -Eq '^Agent: (grok|claude|codex|chatgpt|julien)$' "$MSG_FILE"; then
+  echo "Message refusé : ajoute une ligne « Agent: claude » (ou grok, codex, chatgpt, julien) à la fin." >&2
+  exit 1
+fi
+exit 0
