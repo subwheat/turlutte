@@ -162,7 +162,7 @@
       "type": "carrousel",
       "settings": {
         "titre": "Le Réveillon",
-        "intro": "Un dîner, deux actes. Les tenues de la soirée du 24."
+        "intro": "Une soirée du 24, dans l’ordre où elle se passe."
       },
       "blocks": {
         "acte1": {
@@ -170,10 +170,11 @@
           "settings": {
             "fichier": "reveillon-pulls-de-noel.jpg",
             "alt": "T-shirt noir brodé « Vous avez l’air cons avec vos pulls de Noël. »",
-            "surtitre": "Acte I · 20 h",
+            "surtitre": "20 h · L’apéritif",
             "titre": "Les pulls de Noël arrivent.",
             "texte": "<p>Rennes en jacquard, clochettes, pompons. Il en faut un pour le dire, avec la politesse de la maison.</p>",
-            "texte_lien": "Voir la pièce"
+            "texte_lien": "Voir la pièce",
+            "format": "portrait"
           }
         },
         "acte2": {
@@ -181,14 +182,41 @@
           "settings": {
             "fichier": "reveillon-tonton.jpg",
             "alt": "T-shirt écru, étiquette cadeau « Tonton raciste, joyeux Noël »",
-            "surtitre": "Acte II · 23 h",
+            "surtitre": "23 h · Le fromage",
             "titre": "Il y en a un à chaque table.",
             "texte": "<p>Celui qui attend le fromage pour parler d’immigration. Cette année, personne ne le contredit : on lui offre son étiquette.</p>",
-            "texte_lien": "Voir la pièce"
+            "texte_lien": "Voir la pièce",
+            "format": "portrait"
+          }
+        },
+        "pose01": {
+          "type": "diapo",
+          "settings": {
+            "format": "paysage",
+            "fichier": "reveillon-pose-01.jpg",
+            "alt": "Le Notaire et La Divorcée se font la bise à l’arrivée, photo au flash",
+            "surtitre": "19 h 40 · L’arrivée",
+            "titre": "On se fait la bise.",
+            "texte": "<p>Le Notaire reçoit. La Divorcée garde son manteau. Ils ont l’air ravis de se revoir.</p>",
+            "texte_lien": ""
+          }
+        },
+        "pose02": {
+          "type": "diapo",
+          "settings": {
+            "format": "paysage",
+            "fichier": "reveillon-pose-02.jpg",
+            "alt": "L’Héritier présente sa fiancée à son père, qui lui serre la main un peu trop longtemps",
+            "surtitre": "19 h 42 · Les présentations",
+            "titre": "Je plais à ton père.",
+            "texte": "<p>L’Héritier présente sa fiancée. Tonton lui tient la main une seconde de trop. Sur la manche, brodée, la seule phrase vraie de la soirée.</p>",
+            "texte_lien": ""
           }
         }
       },
       "block_order": [
+        "pose01",
+        "pose02",
         "acte1",
         "acte2"
       ]

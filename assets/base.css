@@ -345,15 +345,18 @@ html.no-js .seule-nuit-image { display: none; }
 .carrousel__fleche { width: 3rem; height: 3rem; border: 1px solid var(--encre); background: transparent; cursor: pointer; font-size: 1.25rem; }
 .carrousel__fleche:hover:not(:disabled) { background: var(--encre); color: var(--fond); }
 .carrousel__fleche:disabled { opacity: 0.3; cursor: default; }
-.carrousel__piste { display: grid; grid-auto-flow: column; grid-auto-columns: 85%; gap: 1rem; margin: 0 calc(-1 * var(--marge)); padding: 0 var(--marge); list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--marge); scrollbar-width: none; overscroll-behavior-x: contain; }
+.carrousel__piste { display: flex; gap: 1rem; margin: 0 calc(-1 * var(--marge)); padding: 0 var(--marge); list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--marge); scrollbar-width: none; overscroll-behavior-x: contain; }
 .carrousel__piste::-webkit-scrollbar { display: none; }
-@media (min-width: 990px) { .carrousel__piste { grid-auto-columns: calc((100% - 2 * var(--marge) - 1.5rem) / 2.4); gap: 1.5rem; } }
+.carrousel__diapo { flex: 0 0 82%; }
+.carrousel__diapo--paysage { flex-basis: 92%; }
+@media (min-width: 990px) { .carrousel__piste { gap: 1.5rem; } .carrousel__diapo { flex-basis: 30%; } .carrousel__diapo--paysage { flex-basis: 56%; } }
 .carrousel__diapo { scroll-snap-align: start; display: grid; gap: 1rem; align-content: start; }
 .carrousel__cadre { margin: 0; aspect-ratio: 4/5; overflow: hidden; background: #fff; }
 .carrousel__cadre img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1); }
 @media (hover: hover) { .carrousel__diapo:hover .carrousel__cadre img { transform: scale(1.03); } }
-[data-state='jour'] .carrousel__cadre { background: var(--fond); }
-[data-state='jour'] .carrousel__cadre img { mix-blend-mode: multiply; }
+[data-state='jour'] .carrousel__diapo--portrait .carrousel__cadre { background: var(--fond); }
+.carrousel__diapo--paysage .carrousel__cadre { aspect-ratio: 3/2; background: #000; }
+[data-state='jour'] .carrousel__diapo--portrait .carrousel__cadre img { mix-blend-mode: multiply; }
 [data-state='nuit'] .carrousel__cadre { box-shadow: 0 0 0 1px var(--voile); }
 .carrousel__acte { margin: 0; font-size: 0.8125rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--signal); }
 .carrousel__titre { margin: 0.25rem 0 0.5rem; font-family: var(--display); font-weight: 400; font-size: clamp(1.5rem, 4vw, 2.25rem); line-height: 1.05; text-wrap: balance; }

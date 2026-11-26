@@ -16,14 +16,14 @@
   </div>
   <ol class="carrousel__piste" data-piste tabindex="0">
     {%- for block in section.blocks -%}
-      <li class="carrousel__diapo" {{ block.shopify_attributes }} aria-roledescription="diapo" aria-label="{{ forloop.index }} sur {{ forloop.length }}">
+      <li class="carrousel__diapo carrousel__diapo--{{ block.settings.format | default: 'portrait' }}" {{ block.shopify_attributes }} aria-roledescription="diapo" aria-label="{{ forloop.index }} sur {{ forloop.length }}">
         <figure class="carrousel__cadre">
           {%- if block.settings.image != blank -%}
             {{ block.settings.image | image_url: width: 1600 | image_tag: widths: '400, 800, 1200, 1600', sizes: '(min-width: 990px) 40vw, 85vw', loading: 'lazy', alt: block.settings.titre | escape }}
           {%- elsif block.settings.fichier != blank -%}
-            <img src="{{ block.settings.fichier | asset_url }}" alt="{{ block.settings.alt | default: block.settings.titre | escape }}" width="1600" height="2000" loading="lazy">
+            <img src="{{ block.settings.fichier | asset_url }}" alt="{{ block.settings.alt | default: block.settings.titre | escape }}" width="{% if block.settings.format == 'paysage' %}1536{% else %}1600{% endif %}" height="{% if block.settings.format == 'paysage' %}1024{% else %}2000{% endif %}" loading="lazy">
           {%- else -%}
-            {% render 'visuel', nom: block.settings.titre, ratio: '4/5' %}
+            {%- if block.settings.format == 'paysage' -%}{% render 'visuel', nom: block.settings.titre, ratio: '3/2' %}{%- else -%}{% render 'visuel', nom: block.settings.titre, ratio: '4/5' %}{%- endif -%}
           {%- endif -%}
         </figure>
         <div class="carrousel__legende">
@@ -53,6 +53,7 @@
       "name": "Diapo",
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Visuel" },
+        { "type": "select", "id": "format", "label": "Format", "default": "portrait", "options": [ { "value": "portrait", "label": "Portrait 4:5 (pièce)" }, { "value": "paysage", "label": "Paysage 3:2 (photo du shooting)" } ] },
         { "type": "text", "id": "fichier", "label": "Ou fichier du thème (essai)", "info": "Nom d'un fichier dans assets, ex. reveillon-pulls-de-noel.jpg" },
         { "type": "text", "id": "alt", "label": "Texte alternatif" },
         { "type": "text", "id": "surtitre", "label": "Surtitre (l'acte)" },

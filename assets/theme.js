@@ -207,19 +207,27 @@
     var points = racine.querySelectorAll('.carrousel__point');
     var prec = racine.querySelector('[data-precedent]');
     var suiv = racine.querySelector('[data-suivant]');
-    function pas() { return diapos.length > 1 ? diapos[1].offsetLeft - diapos[0].offsetLeft : piste.clientWidth; }
-    function courant() { return Math.round(piste.scrollLeft / pas()); }
+    function debut() { return parseFloat(getComputedStyle(piste).paddingLeft) || 0; }
+    function courant() {
+      var x = piste.scrollLeft + debut(), i = 0, best = Infinity;
+      diapos.forEach(function (d, n) { var e = Math.abs(d.offsetLeft - x); if (e < best) { best = e; i = n; } });
+      return i;
+    }
+    function aller(n) {
+      n = Math.max(0, Math.min(diapos.length - 1, n));
+      piste.scrollTo({ left: diapos[n].offsetLeft - debut(), behavior: 'smooth' });
+    }
     function maj() {
       var i = courant();
       points.forEach(function (p, n) { p.classList.toggle('carrousel__point--actif', n === i); });
       if (prec) prec.disabled = piste.scrollLeft <= 2;
       if (suiv) suiv.disabled = piste.scrollLeft + piste.clientWidth >= piste.scrollWidth - 2;
     }
-    if (prec) prec.addEventListener('click', function () { piste.scrollBy({ left: -pas(), behavior: 'smooth' }); });
-    if (suiv) suiv.addEventListener('click', function () { piste.scrollBy({ left: pas(), behavior: 'smooth' }); });
+    if (prec) prec.addEventListener('click', function () { aller(courant() - 1); });
+    if (suiv) suiv.addEventListener('click', function () { aller(courant() + 1); });
     piste.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowRight') { e.preventDefault(); piste.scrollBy({ left: pas(), behavior: 'smooth' }); }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); piste.scrollBy({ left: -pas(), behavior: 'smooth' }); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); aller(courant() + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); aller(courant() - 1); }
     });
     piste.addEventListener('scroll', function () { window.requestAnimationFrame(maj); }, { passive: true });
     window.addEventListener('resize', maj);
