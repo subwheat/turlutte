@@ -146,7 +146,9 @@
     const bouton = form.querySelector('[data-ajouter]');
     const texte = form.querySelector('[data-texte-bouton]');
     const message = form.querySelector('[data-message]');
-    const prix = document.querySelector('[data-prix]');
+    const carte = form.closest('[data-produit]');
+    const prix = (carte || document).querySelector('[data-prix]');
+    const photo = carte && carte.querySelector('[data-photo-variante]');
     const format = (c) => (c / 100).toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
 
     form.addEventListener('change', (e) => {
@@ -158,6 +160,8 @@
       bouton.disabled = !v.available;
       texte.textContent = v.available ? 'Ajouter au panier' : 'Bientôt de retour';
       if (prix) prix.textContent = format(v.price);
+      if (photo && v.featured_image) { photo.src = v.featured_image.src + (v.featured_image.src.includes('?') ? '&' : '?') + 'width=1200'; photo.removeAttribute('srcset'); }
+      if (carte) return;
       const url = new URL(location.href);
       url.searchParams.set('variant', v.id);
       history.replaceState({}, '', url);

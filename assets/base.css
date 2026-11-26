@@ -364,3 +364,34 @@ html.no-js .seule-nuit-image { display: none; }
 .carrousel__points { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; }
 .carrousel__point { width: 0.5rem; height: 0.5rem; border: 1px solid var(--encre); border-radius: 50%; transition: background 200ms; }
 .carrousel__point--actif { background: var(--encre); }
+
+/* ---------- Lookbook (page du shooting) ---------- */
+.lookbook__tete { max-width: 46rem; padding-bottom: 1rem; }
+.lookbook__titre { margin: 0.25rem 0 1rem; font-family: var(--display); font-weight: 400; font-size: clamp(2.75rem, 9vw, 6rem); line-height: 0.98; }
+.lookbook__chapo p { margin: 0; font-size: 1.125rem; font-style: italic; max-width: 40ch; }
+.lookbook__fil { display: grid; gap: clamp(3rem, 10vw, 8rem); margin: 0; padding: 0 0 clamp(3rem, 10vw, 8rem); list-style: none; }
+.lookbook__photo { display: grid; gap: 1rem; }
+.lookbook__cadre { margin: 0; aspect-ratio: 3/2; overflow: hidden; background: #000; }
+.lookbook__cadre img { width: 100%; height: 100%; object-fit: cover; }
+.lookbook__legende, .lookbook__infos { padding: 0 var(--marge); }
+@media (min-width: 990px) {
+  .lookbook__photo--large .lookbook__cadre { margin: 0 var(--marge); }
+  .lookbook__photo--gauche { grid-template-columns: 7fr 3fr; align-items: end; padding-right: var(--marge); }
+  .lookbook__photo--droite { grid-template-columns: 3fr 7fr; align-items: end; padding-left: var(--marge); }
+  .lookbook__photo--droite .lookbook__cadre { order: 2; }
+  .lookbook__photo--gauche .lookbook__legende, .lookbook__photo--droite .lookbook__legende { padding: 0; }
+  .lookbook__photo--droite .lookbook__legende { padding-left: 0; }
+  .lookbook__photo--large .lookbook__legende { max-width: 40rem; }
+}
+.lookbook__piece { display: grid; gap: 1.25rem; padding: 0 var(--marge); }
+.lookbook__piece .lookbook__infos { padding: 0; }
+@media (min-width: 750px) { .lookbook__piece { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(2rem, 5vw, 5rem); align-items: center; max-width: 72rem; margin: 0 auto; width: 100%; } .lookbook__piece--droite .lookbook__packshot { order: 2; } }
+.lookbook__packshot { margin: 0; aspect-ratio: 4/5; overflow: hidden; background: var(--fond); }
+.lookbook__packshot img { width: 100%; height: 100%; object-fit: cover; }
+[data-state='jour'] .lookbook__packshot img { mix-blend-mode: multiply; }
+[data-state='nuit'] .lookbook__packshot { background: #fff; }
+.lookbook__infos .carrousel__titre a { text-decoration: none; }
+.lookbook__infos .fiche__prix { margin: 0 0 1.25rem; }
+.lookbook__achat .bouton { width: 100%; max-width: 22rem; }
+.lookbook__mot { margin-top: 1.5rem; font-style: italic; }
+.lookbook__achat--essai .pastille span { cursor: default; }

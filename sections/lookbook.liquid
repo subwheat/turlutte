@@ -1,0 +1,152 @@
+{%- comment -%}
+  Page éditoriale d'un shooting (ex. « Le Réveillon ») : alterne photos en situation et pièces à composer.
+  Bloc « photo » : une image du shooting (image Shopify ou fichier du thème), heure, titre, récit.
+  Bloc « produit » : une pièce, avec choix taille et couleur et ajout au panier. Tant que le produit
+  n'existe pas dans Shopify, on montre le packshot (fichier du thème) et des choix d'essai, sans achat.
+{%- endcomment -%}
+<section class="lookbook" aria-labelledby="lookbook-{{ section.id }}">
+  <header class="lookbook__tete section">
+    {%- if section.settings.surtitre != blank -%}<p class="carrousel__acte">{{ section.settings.surtitre }}</p>{%- endif -%}
+    <h1 id="lookbook-{{ section.id }}" class="lookbook__titre">{{ section.settings.titre | default: page.title }}</h1>
+    {%- if section.settings.chapo != blank -%}<div class="lookbook__chapo">{{ section.settings.chapo }}</div>{%- endif -%}
+  </header>
+
+  <ol class="lookbook__fil" role="list">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'photo' -%}
+          <li class="lookbook__photo lookbook__photo--{{ block.settings.cadrage }}" {{ block.shopify_attributes }}>
+            <figure class="lookbook__cadre">
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 2000 | image_tag: widths: '600, 1000, 1400, 2000', sizes: '(min-width: 990px) 70vw, 100vw', loading: 'lazy', alt: block.settings.alt | default: block.settings.titre | escape }}
+              {%- elsif block.settings.fichier != blank -%}
+                <img src="{{ block.settings.fichier | asset_url }}" alt="{{ block.settings.alt | default: block.settings.titre | escape }}" width="1536" height="1024" loading="lazy">
+              {%- else -%}
+                {% render 'visuel', nom: block.settings.titre, ratio: '3/2' %}
+              {%- endif -%}
+            </figure>
+            <div class="lookbook__legende">
+              {%- if block.settings.heure != blank -%}<p class="carrousel__acte">{{ block.settings.heure }}</p>{%- endif -%}
+              {%- if block.settings.titre != blank -%}<h2 class="carrousel__titre">{{ block.settings.titre }}</h2>{%- endif -%}
+              {%- if block.settings.texte != blank -%}<div class="carrousel__texte">{{ block.settings.texte }}</div>{%- endif -%}
+            </div>
+          </li>
+
+        {%- when 'produit' -%}
+          {%- assign p = block.settings.produit -%}
+          <li class="lookbook__piece{% if block.settings.cote == 'droite' %} lookbook__piece--droite{% endif %}" data-produit {{ block.shopify_attributes }}>
+            <figure class="lookbook__packshot">
+              {%- if p != blank and p.featured_media != blank -%}
+                {%- assign v = p.selected_or_first_available_variant -%}
+                {%- assign img = v.featured_image | default: p.featured_media.preview_image -%}
+                {%- assign alt_p = p.title | escape -%}
+                {{ img | image_url: width: 1200 | image_tag: widths: '400, 800, 1200', sizes: '(min-width: 990px) 35vw, 90vw', loading: 'lazy', alt: alt_p, data-photo-variante: '' }}
+              {%- elsif block.settings.fichier != blank -%}
+                <img src="{{ block.settings.fichier | asset_url }}" alt="{{ block.settings.nom | escape }}" width="1600" height="2000" loading="lazy">
+              {%- else -%}
+                {% render 'visuel', nom: 'Packshot face, jour', ratio: '4/5' %}
+              {%- endif -%}
+            </figure>
+            <div class="lookbook__infos">
+              {%- if block.settings.accroche != blank -%}<p class="carrousel__acte">{{ block.settings.accroche }}</p>{%- endif -%}
+              {%- if p != blank -%}
+                <h2 class="carrousel__titre"><a href="{{ p.url }}">{{ p.title | escape }}</a></h2>
+                <p class="fiche__prix" data-prix>{{ p.selected_or_first_available_variant.price | money }}</p>
+                {%- form 'product', p, class: 'achat lookbook__achat', data-achat: '', novalidate: 'novalidate' -%}
+                  <input type="hidden" name="id" value="{{ p.selected_or_first_available_variant.id }}" data-variante>
+                  {%- unless p.has_only_default_variant -%}
+                    {%- for option in p.options_with_values -%}
+                      <fieldset class="achat__option">
+                        <legend>{{ option.name | escape }}</legend>
+                        <div class="achat__valeurs">
+                          {%- for valeur in option.values -%}
+                            <label class="pastille">
+                              <input type="radio" name="{{ block.id }}-option{{ option.position }}" value="{{ valeur | escape }}" data-option="{{ forloop.parentloop.index0 }}"{% if option.selected_value == valeur %} checked{% endif %}>
+                              <span>{{ valeur | escape }}</span>
+                            </label>
+                          {%- endfor -%}
+                        </div>
+                      </fieldset>
+                    {%- endfor -%}
+                  {%- endunless -%}
+                  <button type="submit" name="add" class="bouton bouton--plein" data-ajouter{% unless p.selected_or_first_available_variant.available %} disabled{% endunless %}>
+                    <span data-texte-bouton>{% if p.selected_or_first_available_variant.available %}Ajouter au panier{% else %}Bientôt de retour{% endif %}</span>
+                  </button>
+                  <p class="achat__message" role="status" data-message hidden></p>
+                  <script type="application/json" data-variantes>{{ p.variants | json }}</script>
+                {%- endform -%}
+              {%- else -%}
+                <h2 class="carrousel__titre">{{ block.settings.nom }}</h2>
+                {%- if block.settings.prix != blank -%}<p class="fiche__prix">{{ block.settings.prix }}</p>{%- endif -%}
+                <div class="achat lookbook__achat lookbook__achat--essai">
+                  {%- assign tailles = block.settings.tailles | split: ',' -%}
+                  {%- assign couleurs = block.settings.couleurs | split: ',' -%}
+                  {%- if couleurs.size > 0 -%}
+                    <fieldset class="achat__option">
+                      <legend>Couleur</legend>
+                      <div class="achat__valeurs">
+                        {%- for c in couleurs -%}<label class="pastille"><input type="radio" name="{{ block.id }}-couleur" value="{{ c | strip | escape }}"{% if forloop.first %} checked{% endif %}><span>{{ c | strip }}</span></label>{%- endfor -%}
+                      </div>
+                    </fieldset>
+                  {%- endif -%}
+                  {%- if tailles.size > 0 -%}
+                    <fieldset class="achat__option">
+                      <legend>Taille</legend>
+                      <div class="achat__valeurs">
+                        {%- for t in tailles -%}<label class="pastille"><input type="radio" name="{{ block.id }}-taille" value="{{ t | strip | escape }}"><span>{{ t | strip }}</span></label>{%- endfor -%}
+                      </div>
+                    </fieldset>
+                  {%- endif -%}
+                  <button type="button" class="bouton bouton--plein" disabled>Bientôt disponible</button>
+                </div>
+              {%- endif -%}
+              {%- if block.settings.texte != blank -%}<div class="carrousel__texte lookbook__mot">{{ block.settings.texte }}</div>{%- endif -%}
+            </div>
+          </li>
+      {%- endcase -%}
+    {%- endfor -%}
+  </ol>
+</section>
+
+{% schema %}
+{
+  "name": "Lookbook",
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Shooting du mois" },
+    { "type": "text", "id": "titre", "label": "Titre (sinon, titre de la page)" },
+    { "type": "richtext", "id": "chapo", "label": "Chapô" }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo en situation",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "text", "id": "fichier", "label": "Ou fichier du thème (essai)" },
+        { "type": "text", "id": "alt", "label": "Texte alternatif" },
+        { "type": "select", "id": "cadrage", "label": "Cadrage", "default": "large", "options": [ { "value": "large", "label": "Pleine largeur" }, { "value": "gauche", "label": "Décalée à gauche" }, { "value": "droite", "label": "Décalée à droite" } ] },
+        { "type": "text", "id": "heure", "label": "Heure / surtitre" },
+        { "type": "text", "id": "titre", "label": "Titre" },
+        { "type": "richtext", "id": "texte", "label": "Récit" }
+      ]
+    },
+    {
+      "type": "produit",
+      "name": "Pièce à composer",
+      "settings": [
+        { "type": "product", "id": "produit", "label": "Produit" },
+        { "type": "select", "id": "cote", "label": "Packshot", "default": "gauche", "options": [ { "value": "gauche", "label": "À gauche" }, { "value": "droite", "label": "À droite" } ] },
+        { "type": "text", "id": "accroche", "label": "Surtitre (le moment de la soirée)" },
+        { "type": "richtext", "id": "texte", "label": "Le mot de la maison" },
+        { "type": "header", "content": "Tant que le produit n'existe pas" },
+        { "type": "text", "id": "nom", "label": "Nom de la pièce" },
+        { "type": "text", "id": "prix", "label": "Prix affiché" },
+        { "type": "text", "id": "fichier", "label": "Packshot (fichier du thème)" },
+        { "type": "text", "id": "couleurs", "label": "Couleurs (séparées par des virgules)", "default": "Noir, Écru" },
+        { "type": "text", "id": "tailles", "label": "Tailles (séparées par des virgules)", "default": "XS, S, M, L, XL, XXL" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Lookbook" }]
+}
+{% endschema %}
