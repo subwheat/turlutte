@@ -1,0 +1,5 @@
+{%- comment -%} Case obligatoire « J'ai 18 ans ou plus » pour les formulaires du Vice. Paramètre : id (unique). {%- endcomment -%}
+<label class="case-majeur" for="{{ id }}">
+  <input id="{{ id }}" type="checkbox" name="contact[note][Majeur]" value="Oui, déclaré à l’inscription" required>
+  <span>J’ai 18 ans ou plus</span>
+</label>

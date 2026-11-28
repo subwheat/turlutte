@@ -1,0 +1,33 @@
+{%- comment -%}
+  Le Vice est réservé aux majeurs (D-014). Confirmation d'âge à l'entrée des pages du Vice :
+  page Le Vice, collection Le Vice, fiches produit taguées « vice ». Déclaration, pas une vérification d'identité.
+  La réponse est gardée dans le navigateur (localStorage « turlutte-majeur »).
+{%- endcomment -%}
+<div class="age" role="dialog" aria-modal="true" aria-labelledby="age-titre" data-age hidden>
+  <div class="age__boite">
+    <p class="vice__surtitre">Le Vice</p>
+    <h2 id="age-titre" class="age__titre">Réservé aux personnes majeures.</h2>
+    <p class="age__texte">Formules choc, humour adulte. On vous demande votre âge, une fois.</p>
+    <div class="age__actions">
+      <button type="button" class="bouton bouton--plein" data-age-oui>J’ai 18 ans ou plus</button>
+      <a class="bouton" href="{{ routes.root_url }}">Je n’ai pas 18 ans</a>
+    </div>
+  </div>
+</div>
+<script>
+  (function () {
+    var boite = document.querySelector('[data-age]');
+    var ok = null;
+    try { ok = localStorage.getItem('turlutte-majeur'); } catch (e) {}
+    if (ok === 'oui') return;
+    boite.hidden = false;
+    document.documentElement.classList.add('age-ouvert');
+    var oui = boite.querySelector('[data-age-oui]');
+    oui.focus();
+    oui.addEventListener('click', function () {
+      try { localStorage.setItem('turlutte-majeur', 'oui'); } catch (e) {}
+      boite.hidden = true;
+      document.documentElement.classList.remove('age-ouvert');
+    });
+  })();
+</script>
