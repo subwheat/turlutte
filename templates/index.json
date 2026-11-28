@@ -55,8 +55,8 @@
       },
       "block_order": [
         "base",
-        "insolence",
         "vertu",
+        "insolence",
         "vice"
       ],
       "settings": {

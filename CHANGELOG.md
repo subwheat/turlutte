@@ -10,3 +10,6 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Fuseau Europe
 - `.githooks/commit-msg` : Conventional Commits + trailer `Agent:`.
 - `.claude/` : hooks de protection (écriture dans `.git/`, commandes git dangereuses).
 - `shopify-theme` (branche publiée) protégée comme `main` par `git-guard.sh`.
+
+### Modifié
+- Vestiaires (D-014) : quatre vestiaires dans l'ordre La Base, La Vertu, L'Insolence (public), Le Vice (sur invitation). La page « Les vestiaires » suit cet ordre et ne liste jamais Le Vice.
