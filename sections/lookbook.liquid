@@ -16,12 +16,12 @@
     {%- for block in section.blocks -%}
       {%- case block.type -%}
         {%- when 'photo' -%}
-          <li class="lookbook__photo lookbook__photo--{{ block.settings.cadrage }}" {{ block.shopify_attributes }}>
+          <li class="lookbook__photo lookbook__photo--{{ block.settings.cadrage }}{% if block.settings.format == 'portrait' %} lookbook__photo--portrait{% endif %}" {{ block.shopify_attributes }}>
             <figure class="lookbook__cadre">
               {%- if block.settings.image != blank -%}
                 {{ block.settings.image | image_url: width: 2000 | image_tag: widths: '600, 1000, 1400, 2000', sizes: '(min-width: 990px) 70vw, 100vw', loading: 'lazy', alt: block.settings.alt | default: block.settings.titre | escape }}
               {%- elsif block.settings.fichier != blank -%}
-                <img src="{{ block.settings.fichier | asset_url }}" alt="{{ block.settings.alt | default: block.settings.titre | escape }}" width="1536" height="1024" loading="lazy">
+                <img src="{{ block.settings.fichier | asset_url }}" alt="{{ block.settings.alt | default: block.settings.titre | escape }}" width="{% if block.settings.format == 'portrait' %}1122{% else %}1536{% endif %}" height="{% if block.settings.format == 'portrait' %}1402{% else %}1024{% endif %}" loading="lazy">
               {%- else -%}
                 {% render 'visuel', nom: block.settings.titre, ratio: '3/2' %}
               {%- endif -%}
@@ -132,6 +132,7 @@
         { "type": "image_picker", "id": "image", "label": "Photo" },
         { "type": "text", "id": "fichier", "label": "Ou fichier du thème (essai)" },
         { "type": "text", "id": "alt", "label": "Texte alternatif" },
+        { "type": "select", "id": "format", "label": "Format", "default": "paysage", "options": [ { "value": "paysage", "label": "Paysage 3:2" }, { "value": "portrait", "label": "Portrait 4:5" } ] },
         { "type": "select", "id": "cadrage", "label": "Cadrage", "default": "large", "options": [ { "value": "large", "label": "Pleine largeur" }, { "value": "gauche", "label": "Décalée à gauche" }, { "value": "droite", "label": "Décalée à droite" } ] },
         { "type": "text", "id": "heure", "label": "Heure / surtitre" },
         { "type": "text", "id": "titre", "label": "Titre" },

@@ -396,6 +396,8 @@ html.no-js .seule-nuit-image { display: none; }
 .lookbook__mot { margin-top: 1.5rem; font-style: italic; }
 .lookbook__achat--essai .pastille span { cursor: default; }
 .lookbook__vestiaire { font-style: italic; }
+.lookbook__photo--portrait .lookbook__cadre { aspect-ratio: 4/5; }
+@media (min-width: 750px) { .lookbook__photo--portrait.lookbook__photo--gauche { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } .lookbook__photo--portrait.lookbook__photo--droite { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); } .lookbook__photo--portrait.lookbook__photo--large .lookbook__cadre { max-width: 36rem; } }
 .lookbook__piece--vice { --fond: var(--bleu); --encre: var(--creme); --signal: var(--phosphore); background: var(--bleu); color: var(--creme); padding-top: clamp(2rem, 5vw, 4rem); padding-bottom: clamp(2rem, 5vw, 4rem); max-width: none; }
 @media (min-width: 750px) { .lookbook__piece--vice { padding-left: max(var(--marge), calc((100% - 72rem) / 2)); padding-right: max(var(--marge), calc((100% - 72rem) / 2)); } }
 .lookbook__piece--vice .carrousel__acte, .lookbook__piece--vice .lookbook__vestiaire { color: var(--phosphore); }
