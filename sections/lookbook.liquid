@@ -3,6 +3,7 @@
   Bloc « photo » : une image du shooting (image Shopify ou fichier du thème), heure, titre, récit.
   Bloc « produit » : une pièce, avec choix taille et couleur et ajout au panier. Tant que le produit
   n'existe pas dans Shopify, on montre le packshot (fichier du thème) et des choix d'essai, sans achat.
+  « Réservée au Vice » : pièce montrée sans prix ni panier, avec un lien vers la page du Vice (D-006).
 {%- endcomment -%}
 <section class="lookbook" aria-labelledby="lookbook-{{ section.id }}">
   <header class="lookbook__tete section">
@@ -15,12 +16,12 @@
     {%- for block in section.blocks -%}
       {%- case block.type -%}
         {%- when 'photo' -%}
-          <li class="lookbook__photo lookbook__photo--{{ block.settings.cadrage }}" {{ block.shopify_attributes }}>
+          <li class="lookbook__photo lookbook__photo--{{ block.settings.cadrage }}{% if block.settings.format == 'portrait' %} lookbook__photo--portrait{% endif %}" {{ block.shopify_attributes }}>
             <figure class="lookbook__cadre">
               {%- if block.settings.image != blank -%}
                 {{ block.settings.image | image_url: width: 2000 | image_tag: widths: '600, 1000, 1400, 2000', sizes: '(min-width: 990px) 70vw, 100vw', loading: 'lazy', alt: block.settings.alt | default: block.settings.titre | escape }}
               {%- elsif block.settings.fichier != blank -%}
-                <img src="{{ block.settings.fichier | asset_url }}" alt="{{ block.settings.alt | default: block.settings.titre | escape }}" width="1536" height="1024" loading="lazy">
+                <img src="{{ block.settings.fichier | asset_url }}" alt="{{ block.settings.alt | default: block.settings.titre | escape }}" width="{% if block.settings.format == 'portrait' %}1122{% else %}1536{% endif %}" height="{% if block.settings.format == 'portrait' %}1402{% else %}1024{% endif %}" loading="lazy">
               {%- else -%}
                 {% render 'visuel', nom: block.settings.titre, ratio: '3/2' %}
               {%- endif -%}
@@ -34,7 +35,8 @@
 
         {%- when 'produit' -%}
           {%- assign p = block.settings.produit -%}
-          <li class="lookbook__piece{% if block.settings.cote == 'droite' %} lookbook__piece--droite{% endif %}" data-produit {{ block.shopify_attributes }}>
+          {%- assign vice = block.settings.reserve_vice -%}
+          <li class="lookbook__piece{% if block.settings.cote == 'droite' %} lookbook__piece--droite{% endif %}{% if vice %} lookbook__piece--vice{% endif %}"{% unless vice %} data-produit{% endunless %} {{ block.shopify_attributes }}>
             <figure class="lookbook__packshot">
               {%- if p != blank and p.featured_media != blank -%}
                 {%- assign v = p.selected_or_first_available_variant -%}
@@ -48,8 +50,14 @@
               {%- endif -%}
             </figure>
             <div class="lookbook__infos">
-              {%- if block.settings.accroche != blank -%}<p class="carrousel__acte">{{ block.settings.accroche }}</p>{%- endif -%}
-              {%- if p != blank -%}
+              {%- if block.settings.accroche != blank or block.settings.vestiaire != blank -%}
+                <p class="carrousel__acte">{{ block.settings.accroche }}{% if block.settings.accroche != blank and block.settings.vestiaire != blank %} · {% endif %}{% if block.settings.vestiaire != blank %}<span class="lookbook__vestiaire">{{ block.settings.vestiaire }}</span>{% endif %}</p>
+              {%- endif -%}
+              {%- if vice -%}
+                <h2 class="carrousel__titre">{% if p != blank %}{{ p.title | escape }}{% else %}{{ block.settings.nom }}{% endif %}</h2>
+                <p class="lookbook__reserve">{{ block.settings.mention_vice | default: 'Réservé aux membres du vestiaire Le Vice.' }}</p>
+                <a class="bouton bouton--plein lookbook__invitation" href="{{ block.settings.lien_vice | default: '/pages/le-vice' }}">{{ block.settings.bouton_vice | default: 'Demander une invitation' }} <span aria-hidden="true">→</span></a>
+              {%- elsif p != blank -%}
                 <h2 class="carrousel__titre"><a href="{{ p.url }}">{{ p.title | escape }}</a></h2>
                 <p class="fiche__prix" data-prix>{{ p.selected_or_first_available_variant.price | money }}</p>
                 {%- form 'product', p, class: 'achat lookbook__achat', data-achat: '', novalidate: 'novalidate' -%}
@@ -124,6 +132,7 @@
         { "type": "image_picker", "id": "image", "label": "Photo" },
         { "type": "text", "id": "fichier", "label": "Ou fichier du thème (essai)" },
         { "type": "text", "id": "alt", "label": "Texte alternatif" },
+        { "type": "select", "id": "format", "label": "Format", "default": "paysage", "options": [ { "value": "paysage", "label": "Paysage 3:2" }, { "value": "portrait", "label": "Portrait 4:5" } ] },
         { "type": "select", "id": "cadrage", "label": "Cadrage", "default": "large", "options": [ { "value": "large", "label": "Pleine largeur" }, { "value": "gauche", "label": "Décalée à gauche" }, { "value": "droite", "label": "Décalée à droite" } ] },
         { "type": "text", "id": "heure", "label": "Heure / surtitre" },
         { "type": "text", "id": "titre", "label": "Titre" },
@@ -138,6 +147,12 @@
         { "type": "select", "id": "cote", "label": "Packshot", "default": "gauche", "options": [ { "value": "gauche", "label": "À gauche" }, { "value": "droite", "label": "À droite" } ] },
         { "type": "text", "id": "accroche", "label": "Surtitre (le moment de la soirée)" },
         { "type": "richtext", "id": "texte", "label": "Le mot de la maison" },
+        { "type": "text", "id": "vestiaire", "label": "Vestiaire (après le surtitre)", "info": "Ex. L'Insolence, Le Vice" },
+        { "type": "header", "content": "Pièce du Vice" },
+        { "type": "checkbox", "id": "reserve_vice", "label": "Réservée aux membres du Vice (ni prix ni panier)", "default": false },
+        { "type": "text", "id": "mention_vice", "label": "Mention", "default": "Réservé aux membres du vestiaire Le Vice." },
+        { "type": "text", "id": "bouton_vice", "label": "Bouton", "default": "Demander une invitation" },
+        { "type": "url", "id": "lien_vice", "label": "Lien du bouton", "info": "Par défaut, la page du Vice" },
         { "type": "header", "content": "Tant que le produit n'existe pas" },
         { "type": "text", "id": "nom", "label": "Nom de la pièce" },
         { "type": "text", "id": "prix", "label": "Prix affiché" },
