@@ -1,8 +1,11 @@
 <section class="page">
   <h1 class="page__titre">{{ section.settings.titre }}</h1>
   <ul class="vestiaires__grille" role="list">
-    {%- for c in collections -%}
-      {%- if c.handle == 'le-vice' or c.handle == 'frontpage' or c.handle == 'all' -%}{%- continue -%}{%- endif -%}
+    {%- comment -%} Ordre des vestiaires publics (D-014) : La Base, La Vertu, L'Insolence ; Le Vice n'est jamais listé. {%- endcomment -%}
+    {%- assign ordre = 'la-base,la-vertu,l-insolence' | split: ',' -%}
+    {%- for h in ordre -%}
+      {%- assign c = collections[h] -%}
+      {%- if c == blank or c.id == blank -%}{%- continue -%}{%- endif -%}
       {%- assign nom_c = c.title | append: ', campagne' -%}
       <li class="tuile">
         <a class="tuile__lien" href="{{ c.url }}">
