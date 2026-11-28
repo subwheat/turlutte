@@ -448,3 +448,18 @@ html.no-js .seule-nuit-image { display: none; }
   .accueil__diapo--nuit .accueil__image img { object-position: 50% 50%; }
 }
 .accueil__bouton span { margin-left: 0.4em; }
+
+/* ---------- Le Vice : majeurs uniquement (D-014) ---------- */
+.age { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: var(--marge); background: rgb(14 34 57 / 0.97); color: var(--creme); }
+.age[hidden] { display: none; }
+.age-ouvert, .age-ouvert body { overflow: hidden; }
+.age__boite { max-width: 30rem; display: grid; gap: 1rem; text-align: left; }
+.age__titre { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(2rem, 6vw, 3.25rem); line-height: 1.05; }
+.age__texte { margin: 0; font-style: italic; opacity: 0.85; }
+.age__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.5rem; }
+.age .bouton { border-color: var(--creme); color: var(--creme); }
+.age .bouton--plein { background: var(--creme); color: var(--bleu); }
+.case-majeur { display: flex; align-items: center; gap: 0.625rem; margin-top: 0.75rem; font-size: 0.875rem; cursor: pointer; }
+.case-majeur input { width: 1.125rem; height: 1.125rem; min-height: 0; margin: 0; padding: 0; accent-color: var(--phosphore); }
+.accueil__liste { flex-wrap: wrap; }
+.accueil__liste .case-majeur { flex-basis: 100%; margin: 0; padding: 0.625rem 1rem; border-top: 1px solid rgb(246 241 228 / 0.2); }

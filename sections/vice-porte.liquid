@@ -1,6 +1,7 @@
 {%- comment -%}
-  Le Vice, sur invitation. Sans le tag client « vice-invite » : page sombre, photo au flash, l'accroche,
-  aucun produit, aucun prix, et le formulaire « Demander une invitation ».
+  Le Vice, sur invitation, réservé aux majeurs (D-014). Sans le tag client « vice-invite » : page sombre,
+  photo au flash, l'accroche, aucun produit, aucun prix, et le formulaire « Demander une invitation »
+  avec la case obligatoire « J'ai 18 ans ou plus ». Confirmation d'âge à l'entrée : snippet vice-age (layout).
   Le formulaire crée un client Shopify tagué « vice-attente » (et le parrain en note).
   Avec le tag : les pièces de la collection Le Vice.
 {%- endcomment -%}
@@ -36,13 +37,14 @@
           {%- if form.posted_successfully? -%}
             <p class="formulaire__ok" role="status">{{ section.settings.merci }}</p>
           {%- else -%}
-            <input type="hidden" name="contact[tags]" value="vice-attente, newsletter">
+            <input type="hidden" name="contact[tags]" value="vice-attente, majeur-declare, newsletter">
             <label for="vice-prenom">Prénom</label>
             <input id="vice-prenom" type="text" name="contact[first_name]" autocomplete="given-name" required>
             <label for="vice-email">E-mail</label>
             <input id="vice-email" type="email" name="contact[email]" autocomplete="email" required>
             <label for="vice-parrain">Qui vous envoie ? <span>(facultatif)</span></label>
             <input id="vice-parrain" type="text" name="contact[note][Parrain]">
+            {% render 'case-majeur', id: 'vice-majeur' %}
             <button type="submit" class="bouton bouton--plein">Demander une invitation</button>
             {%- if form.errors -%}<p class="formulaire__erreur" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
           {%- endif -%}

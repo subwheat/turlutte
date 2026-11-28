@@ -35,10 +35,12 @@
           {%- if b.liste_attente -%}
             {%- assign id_liste = 'liste-' | append: block.id -%}
             {%- form 'customer', id: id_liste, class: 'accueil__liste' -%}
-              <input type="hidden" name="contact[tags]" value="liste-vice">
+              <input type="hidden" name="contact[tags]" value="liste-vice, vice-attente, majeur-declare">
               <label class="visuellement-cache" for="liste-{{ block.id }}-email">E-mail</label>
               <input id="liste-{{ block.id }}-email" type="email" name="contact[email]" autocomplete="email" placeholder="votre@adresse.fr" required>
               <button type="submit">{{ b.bouton | default: 'Rejoindre la liste' }}</button>
+              {%- assign id_majeur = 'liste-' | append: block.id | append: '-majeur' -%}
+              {% render 'case-majeur', id: id_majeur %}
               {%- if form.posted_successfully? -%}<p class="formulaire__ok" role="status">C’est noté. On vous fera signe.</p>{%- endif -%}
             {%- endform -%}
           {%- else -%}

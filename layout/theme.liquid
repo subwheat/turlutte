@@ -75,6 +75,7 @@
   <body class="gabarit-{{ template.name }}{% if template.suffix %} gabarit-{{ template.name }}--{{ template.suffix }}{% endif %}">
     <a class="evitement" href="#contenu">Aller au contenu</a>
     {% render 'fil' %}
+    {%- if est_vice -%}{% render 'vice-age' %}{%- endif -%}
     {% sections 'header-group' %}
 
     <main id="contenu" tabindex="-1">
