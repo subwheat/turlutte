@@ -12,9 +12,10 @@
         "pose02": { "type": "photo", "settings": { "fichier": "reveillon-pose-02.jpg", "cadrage": "gauche", "alt": "L’Héritier présente sa fiancée à son père", "heure": "19 h 42 · Les présentations", "titre": "Je plais à ton père.", "texte": "<p>L’Héritier présente sa fiancée. Tonton lui tient la main une seconde de trop. Sur la manche, brodée, la seule phrase vraie de la soirée.</p>" } },
         "piece_pere": { "type": "produit", "settings": { "cote": "gauche", "accroche": "Porté à 19 h 42", "nom": "Je plais à ton père.", "prix": "", "fichier": "", "couleurs": "Écru, Noir", "tailles": "XS, S, M, L, XL, XXL", "texte": "<p>Broderie sur la manche. Il faut s’approcher pour lire.</p>" } },
         "piece_pulls": { "type": "produit", "settings": { "cote": "droite", "accroche": "20 h · L’apéritif", "nom": "Vous avez l’air cons avec vos pulls de Noël.", "prix": "", "fichier": "reveillon-pulls-de-noel.jpg", "couleurs": "Noir, Écru", "tailles": "XS, S, M, L, XL, XXL", "texte": "<p>Rennes en jacquard, clochettes, pompons. Il en faut un pour le dire.</p>" } },
-        "piece_tonton": { "type": "produit", "settings": { "cote": "gauche", "accroche": "23 h · Le fromage", "nom": "Tonton raciste. Joyeux Noël.", "prix": "", "fichier": "reveillon-tonton.jpg", "couleurs": "Écru, Noir", "tailles": "XS, S, M, L, XL, XXL", "texte": "<p>Il y en a un à chaque table. Cette année, personne ne le contredit : on lui offre son étiquette.</p>" } }
+        "piece_tonton": { "type": "produit", "settings": { "cote": "gauche", "accroche": "23 h · Le fromage", "nom": "Tonton raciste. Joyeux Noël.", "prix": "", "fichier": "reveillon-tonton.jpg", "couleurs": "Écru, Noir", "tailles": "XS, S, M, L, XL, XXL", "texte": "<p>Il y en a un à chaque table. Cette année, personne ne le contredit : on lui offre son étiquette.</p>" } },
+        "piece_karma": { "type": "produit", "settings": { "cote": "droite", "accroche": "Pièce de lancement", "vestiaire": "Le Vice", "nom": "Karma éthylique.", "prix": "", "fichier": "", "couleurs": "", "tailles": "", "reserve_vice": true, "mention_vice": "Réservé aux membres du vestiaire Le Vice.", "bouton_vice": "Demander une invitation", "texte": "<p>Le dernier de la soirée finit aux urgences, et il fait encore le fier.</p>" } }
       },
-      "block_order": ["pose01", "pose02", "piece_pere", "piece_pulls", "piece_tonton"]
+      "block_order": ["pose01", "pose02", "piece_pere", "piece_pulls", "piece_tonton", "piece_karma"]
     }
   },
   "order": ["main"]
